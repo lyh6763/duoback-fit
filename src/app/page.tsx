@@ -4,6 +4,7 @@ import { BodySilhouette } from "@/components/brand/body-silhouette";
 import { ChairCard } from "@/components/chairs/chair-card";
 import { buttonClass } from "@/components/ui/button";
 import { CHAIRS } from "@/data/chairs";
+import { STORES } from "@/data/stores";
 import { chairImage } from "@/lib/chairs/format";
 
 const STEPS = [
@@ -100,7 +101,7 @@ export default function HomePage() {
         </ul>
       </section>
 
-      <section className="page-container space-y-10 pb-8">
+      <section className="page-container space-y-10">
         <div className="flex items-baseline justify-between gap-4">
           <h2 className="text-2xl font-bold tracking-tight md:text-3xl">라인업</h2>
           <Link href="/chairs" className="text-sm font-semibold text-primary hover:underline">
@@ -111,6 +112,21 @@ export default function HomePage() {
           {LINEUP.map((chair) => (
             <ChairCard key={chair.slug} chair={chair} />
           ))}
+        </div>
+      </section>
+
+      <section className="page-container pt-16 md:pt-24">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-xl bg-surface p-8 md:flex-row md:items-center md:p-12">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">결국은 앉아봐야 알죠</h2>
+            <p className="text-muted-strong">
+              전국 <span className="font-semibold tabular-nums">{STORES.length}</span>개 쇼룸에서 라인업을 직접 앉아볼
+              수 있어요.
+            </p>
+          </div>
+          <Link href="/stores" className={buttonClass({ size: "l" })}>
+            가까운 매장 찾기
+          </Link>
         </div>
       </section>
     </>

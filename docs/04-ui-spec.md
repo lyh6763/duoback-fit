@@ -208,7 +208,8 @@
 
 ```
 --breakpoint-md: 768px
---breakpoint-lg: 1280px
+--breakpoint-lg: 1024px   /* v0.2: Tailwind 기본값 사용. 2열 레이아웃 전환 지점 */
+--breakpoint-xl: 1280px   /* 콘텐츠 최대 폭·좌우 마진 80px 적용 지점 */
 ```
 
 ---
@@ -350,8 +351,9 @@
 - **States:** Default / Highlighted(`?model` 필터에 해당)
 
 #### GNB
-- **States:** Transparent(홈 히어로 위) / Solid(스크롤 후) / Mobile
-- **구성:** 로고 / 의자 / 내 의자 찾기(Primary S) / 비교(개수 배지) / 매장
+- **States:** Solid / Mobile *(v0.2: 히어로 위 투명 상태는 구현하지 않고 항상 불투명 배경을 쓴다)*
+- **구성:** 로고 / 의자 / 비교(개수 배지) / 매장 / 내 의자 찾기(Primary S)
+- **Mobile (v0.2):** 메뉴가 4개로 늘어 375px에서 한 줄에 들어가지 않는다(콘텐츠 404px). 햄버거 메뉴 대신 두 줄로 나눈다 — 1행 로고 + 내 의자 찾기, 2행 의자·비교·매장 탭(높이 44). 헤더 높이는 `--header-h`(모바일 101 / md 64 / lg 72)로 관리하고, 헤더 아래 sticky 요소(비교표 머리글 등)가 이 값을 참조한다.
 - **활성 메뉴:** `aria-current="page"` + 밑줄 2px
 
 #### Toast · Dialog · BottomSheet

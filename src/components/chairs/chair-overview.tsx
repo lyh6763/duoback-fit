@@ -10,6 +10,7 @@ import { FitGauge } from "@/components/data/fit-gauge";
 import { ReasonList } from "@/components/data/reason-list";
 import { ScoreBadge } from "@/components/data/score-badge";
 import { buttonClass } from "@/components/ui/button";
+import { storesWithModel } from "@/data/stores";
 import {
   ANGLE_LABEL,
   ARMREST_LABEL,
@@ -65,7 +66,7 @@ export function ChairOverview({ chair }: { chair: Chair }) {
         </div>
       </div>
 
-      <div className="space-y-8 lg:sticky lg:top-24 lg:self-start">
+      <div className="space-y-8 lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
         <div className="space-y-3">
           <p className="text-xs font-semibold tracking-label text-primary">{CATEGORY_LABEL[chair.category]} 의자</p>
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{chair.name}</h1>
@@ -82,7 +83,12 @@ export function ChairOverview({ chair }: { chair: Chair }) {
 
         <BodyFitSpecs chair={chair} />
         <FitPanel chair={chair} />
-        <CompareButton slug={chair.slug} />
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <CompareButton slug={chair.slug} />
+          <Link href={`/stores?model=${chair.slug}`} className="text-sm font-semibold text-primary hover:underline">
+            전시 매장 {storesWithModel(chair.slug).length}곳 보기 →
+          </Link>
+        </div>
       </div>
     </div>
   );

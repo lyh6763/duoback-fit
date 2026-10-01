@@ -25,6 +25,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link href="/stores" className="hover:underline">
+                매장 안내
+              </Link>
+            </li>
+            <li>
               <Link href="/fit/method" className="hover:underline">
                 Fit 계산 방식
               </Link>

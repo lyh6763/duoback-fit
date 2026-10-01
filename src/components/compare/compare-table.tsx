@@ -78,13 +78,13 @@ function Table({
       <thead>
         <tr>
           {desktop && (
-            <td className="sticky top-16 z-10 w-40 rounded-tl-data border-b border-data-line bg-data-surface lg:top-18 lg:w-48" />
+            <td className="sticky top-(--header-h) z-10 w-40 rounded-tl-data border-b border-data-line bg-data-surface lg:w-48" />
           )}
           {chairs.map((chair) => (
             <th
               key={chair.slug}
               scope="col"
-              className={`sticky top-14 z-10 border-b border-data-line bg-data-surface py-3 text-left align-top font-normal md:top-16 lg:top-18 ${cellX}`}
+              className={`sticky top-(--header-h) z-10 border-b border-data-line bg-data-surface py-3 text-left align-top font-normal ${cellX}`}
             >
               <ChairHeader chair={chair} />
             </th>
@@ -92,7 +92,7 @@ function Table({
           {Array.from({ length: emptySlots }, (_, index) => (
             <td
               key={`empty-${index}`}
-              className={`sticky top-14 z-10 border-b border-data-line bg-data-surface py-3 align-top md:top-16 lg:top-18 ${cellX}`}
+              className={`sticky top-(--header-h) z-10 border-b border-data-line bg-data-surface py-3 align-top ${cellX}`}
             >
               <Link
                 href="/chairs"

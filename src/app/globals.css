@@ -139,6 +139,19 @@
   }
 }
 
+/* 고정 헤더 높이 — SiteHeader와 맞춘다. 헤더 아래에 붙는 sticky 요소가 참조한다. */
+:root {
+  --header-h: 101px; /* 모바일: 56 + 탭 구분선 1 + 메뉴 탭 44 (아래 보더 1px은 sticky 요소와 겹쳐도 된다) */
+
+  @media (width >= 768px) {
+    --header-h: 64px;
+  }
+
+  @media (width >= 1024px) {
+    --header-h: 72px;
+  }
+}
+
 @layer base {
   html {
     background-color: var(--color-canvas);

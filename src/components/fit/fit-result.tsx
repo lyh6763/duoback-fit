@@ -12,6 +12,7 @@ import { ScoreBadge } from "@/components/data/score-badge";
 import { ScoreBreakdown } from "@/components/data/score-breakdown";
 import { buttonClass } from "@/components/ui/button";
 import { CHAIRS } from "@/data/chairs";
+import { storesWithModel } from "@/data/stores";
 import { CATEGORY_LABEL, chairImage, formatPrice } from "@/lib/chairs/format";
 import { compareHref } from "@/lib/compare/list";
 import { compareActions } from "@/lib/compare/store";
@@ -227,6 +228,12 @@ function TopMatch({ score, topSlugs }: { score: ChairScore; topSlugs: string[] }
             </button>
           )}
         </div>
+        <Link
+          href={`/stores?model=${chair.slug}`}
+          className="inline-block text-sm font-semibold text-primary hover:underline"
+        >
+          매장에서 앉아보기 · 전시 매장 {storesWithModel(chair.slug).length}곳 →
+        </Link>
       </div>
     </section>
   );
