@@ -18,12 +18,12 @@ export async function generateMetadata(props: PageProps<"/chairs/[slug]">): Prom
   const { slug } = await props.params;
   const chair = getChair(slug);
   if (!chair) return {};
-  const image = chairImage(chair, chair.colors[0].slug);
+  // og:image는 같은 폴더의 opengraph-image.tsx가 자동으로 채운다
   return {
     title: chair.name,
     description: chair.summary,
     alternates: { canonical: `/chairs/${chair.slug}` },
-    openGraph: { title: chair.name, description: chair.summary, images: [{ url: image, width: 1254, height: 1254 }] },
+    openGraph: { title: chair.name, description: chair.summary },
   };
 }
 

@@ -32,7 +32,8 @@
 | 데이터 | zod 스키마로 검증하는 정적 데이터 (`src/data/chairs.ts`) |
 | 상태 | `useSyncExternalStore` 기반 Web Storage 스토어 (프로필: localStorage, 진행 중 답변: sessionStorage) |
 | 테스트 | Vitest — 매칭 로직과 데이터 정합성 |
-| SEO | 페이지별 메타데이터, canonical, OG 이미지, JSON-LD `Product`, sitemap, robots |
+| SEO | 페이지별 메타데이터, canonical, JSON-LD `Product`, sitemap, robots |
+| OG 이미지 | `next/og`로 사이트·상품별 1200×630 이미지를 빌드 시 정적 생성. 상품 이미지에 권장 키·좌판 높이 게이지 표시 |
 | CI | GitHub Actions: lint → typecheck → test → build |
 
 ## 구조
@@ -64,5 +65,11 @@ npm run typecheck   # 라우트 타입 생성 + tsc
 npm test            # Vitest
 npm run build       # 프로덕션 빌드
 ```
+
+### OG 이미지 폰트
+
+OG 렌더러(Satori)는 woff2를 읽지 못해 otf가 필요한데, Pretendard 원본은 굵기당 약 1.5MB입니다.
+`npm run fonts:og`가 KS X 1001 한글 2,350자 + ASCII만 남긴 서브셋(굵기당 약 350KB)을 `assets/fonts/`에 만듭니다.
+서브셋에 없는 글자는 빈 칸으로 그려지므로, OG에 들어가는 문자열은 `src/lib/og/charset.test.ts`가 검사합니다.
 
 배포 시 `NEXT_PUBLIC_SITE_URL`을 설정하면 sitemap, robots, OG 이미지 URL이 해당 도메인으로 생성됩니다.

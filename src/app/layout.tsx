@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   },
   description: "키, 체중, 앉는 시간을 알려주면 내 몸에 맞는 의자와 그 이유를 알려드려요.",
   openGraph: { siteName: "DUOBACK Fit", locale: "ko_KR", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
