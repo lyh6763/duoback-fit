@@ -1,5 +1,7 @@
 # DUOBACK Fit
 
+**배포:** https://duoback-fit.vercel.app
+
 키와 체중, 앉는 습관을 알려주면 내 몸에 맞는 의자와 **그 이유**를 보여주는 의자 쇼룸 사이트입니다.
 기존 React SPA 쇼핑몰 프로젝트(duoback-react)를 기획부터 다시 설계한 포트폴리오 프로젝트입니다.
 
