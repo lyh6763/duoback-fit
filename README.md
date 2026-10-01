@@ -72,4 +72,4 @@ OG 렌더러(Satori)는 woff2를 읽지 못해 otf가 필요한데, Pretendard �
 `npm run fonts:og`가 KS X 1001 한글 2,350자 + ASCII만 남긴 서브셋(굵기당 약 350KB)을 `assets/fonts/`에 만듭니다.
 서브셋에 없는 글자는 빈 칸으로 그려지므로, OG에 들어가는 문자열은 `src/lib/og/charset.test.ts`가 검사합니다.
 
-배포 시 `NEXT_PUBLIC_SITE_URL`을 설정하면 sitemap, robots, OG 이미지 URL이 해당 도메인으로 생성됩니다.
+사이트 주소는 `NEXT_PUBLIC_SITE_URL` → Vercel이 자동 제공하는 `VERCEL_PROJECT_PRODUCTION_URL` → `localhost` 순으로 정해집니다. 커스텀 도메인을 쓸 때만 `NEXT_PUBLIC_SITE_URL`을 설정하면 됩니다.

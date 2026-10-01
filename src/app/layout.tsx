@@ -4,6 +4,7 @@ import { CompareTray } from "@/components/compare/compare-tray";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { Toaster } from "@/components/site/toaster";
+import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
 // 숫자·영문 강조 전용 디스플레이 서체. 한글은 Pretendard(globals.css)로 렌더링된다.
@@ -14,7 +15,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "DUOBACK Fit — 내 몸에 맞는 의자 찾기",
     template: "%s | DUOBACK Fit",
