@@ -33,10 +33,10 @@
 | 스타일 | Tailwind CSS v4 — `@theme` 토큰이 디자인 스펙(`docs/04-ui-spec.md`)과 1:1 대응 |
 | 데이터 | zod 스키마로 검증하는 정적 데이터 (`src/data/chairs.ts`) |
 | 상태 | `useSyncExternalStore` 기반 Web Storage 스토어 (프로필: localStorage, 진행 중 답변: sessionStorage) |
-| 테스트 | Vitest — 매칭 로직과 데이터 정합성 |
+| 테스트 | Vitest — 매칭 로직과 데이터 정합성 · Playwright — 주요 사용 흐름, axe 접근성 검사(WCAG 2.1 AA), SEO 메타데이터 |
 | SEO | 페이지별 메타데이터, canonical, JSON-LD `Product`, sitemap, robots |
 | OG 이미지 | `next/og`로 사이트·상품별 1200×630 이미지를 빌드 시 정적 생성. 상품 이미지에 권장 키·좌판 높이 게이지 표시 |
-| CI | GitHub Actions: lint → typecheck → test → build |
+| CI | GitHub Actions: lint → typecheck → test → build → E2E (실패 시 Playwright 리포트를 아티팩트로 업로드) |
 
 ## 구조
 
@@ -66,6 +66,7 @@ npm run lint        # ESLint
 npm run typecheck   # 라우트 타입 생성 + tsc
 npm test            # Vitest
 npm run build       # 프로덕션 빌드
+npm run test:e2e    # Playwright E2E (프로덕션 빌드를 3100 포트에 띄워 데스크톱·모바일로 실행)
 ```
 
 ### OG 이미지 폰트

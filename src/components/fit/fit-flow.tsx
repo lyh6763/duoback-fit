@@ -304,7 +304,9 @@ function ConcernStep({ initial, onNext }: { initial: Concern[] | undefined; onNe
     setError(false);
     setSelected((prev) => {
       const list = prev ?? [];
-      return list.includes(concern) ? list.filter((item) => item !== concern) : [...list, concern];
+      const next = list.includes(concern) ? list.filter((item) => item !== concern) : [...list, concern];
+      // 마지막 하나를 해제하면 "없어요"가 아니라 "아직 고르지 않음"으로 돌아간다
+      return next.length === 0 ? null : next;
     });
   }
 
