@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import type { ZodType } from "zod";
+import type { ZodMiniType } from "zod/mini";
 
 type Listener = () => void;
 
@@ -8,7 +8,7 @@ type Listener = () => void;
  * - 시크릿 모드 등에서 Storage 접근이 막히면 메모리에만 보관한다.
  * - 서버 렌더와 하이드레이션 중에는 `undefined`(아직 모름)를 돌려준다.
  */
-export function createStorageStore<T>(key: string, area: "local" | "session", schema: ZodType<T>) {
+export function createStorageStore<T>(key: string, area: "local" | "session", schema: ZodMiniType<T>) {
   const listeners = new Set<Listener>();
   let memory: string | null = null;
   let cachedRaw: string | null | undefined;
