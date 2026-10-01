@@ -343,7 +343,7 @@
 
 #### CompareTray
 - **States:** Hidden(0개) / Partial(1개: "하나 더 담아주세요") / Ready(2~3개) / Full(3개, 추가 시 흔들림 320ms)
-- **Mobile:** Collapsed 칩 ↔ Expanded 바텀시트
+- **Mobile:** 높이 80 압축 바(썸네일 + 비교하기). "비우기"는 비교 페이지에서 제공. *(v0.2: 접힘 칩 ↔ 바텀시트 대신 단순화)*
 
 #### StoreCard
 - **구성:** 매장명(H3), 주소, 영업시간, 전화(tel 링크), 전시 모델 썸네일

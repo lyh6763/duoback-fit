@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { CompareIconToggle } from "@/components/compare/compare-toggle";
 import { ScoreBadge } from "@/components/data/score-badge";
 import type { Chair } from "@/lib/chairs/schema";
 import {
@@ -50,6 +51,9 @@ export function ChairCard({
             <ScoreBadge score={score} />
           </span>
         )}
+        <span className="absolute top-2 right-2">
+          <CompareIconToggle slug={chair.slug} name={chair.name} />
+        </span>
       </div>
 
       <ColorSwatches colors={chair.colors} value={color} onChange={setColor} size="s" />

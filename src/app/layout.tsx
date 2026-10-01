@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Fraunces } from "next/font/google";
+import { CompareTray } from "@/components/compare/compare-tray";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
+import { Toaster } from "@/components/site/toaster";
 import "./globals.css";
 
 // 숫자·영문 강조 전용 디스플레이 서체. 한글은 Pretendard(globals.css)로 렌더링된다.
@@ -36,6 +38,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
+        <CompareTray />
+        <Toaster />
       </body>
     </html>
   );

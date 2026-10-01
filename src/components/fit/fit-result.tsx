@@ -13,6 +13,8 @@ import { ScoreBreakdown } from "@/components/data/score-breakdown";
 import { buttonClass } from "@/components/ui/button";
 import { CHAIRS } from "@/data/chairs";
 import { CATEGORY_LABEL, chairImage, formatPrice } from "@/lib/chairs/format";
+import { compareHref } from "@/lib/compare/list";
+import { compareActions } from "@/lib/compare/store";
 import {
   BUDGET_LABEL,
   CONCERN_LABEL,
@@ -23,6 +25,7 @@ import {
 } from "@/lib/fit/profile";
 import { rankChairs, recommendedSeatHeight, type ChairScore } from "@/lib/fit/score";
 import { draftStore, profileStore } from "@/lib/fit/store";
+import { showToast } from "@/lib/toast";
 
 export function FitResult() {
   const profile = profileStore.useValue();
@@ -51,7 +54,7 @@ export function FitResult() {
           </CautionNote>
         )}
 
-        {top ? <TopMatch score={top} /> : <NoMatch />}
+        {top ? <TopMatch score={top} topSlugs={ranked.slice(0, 3).map((s) => s.chair.slug)} /> : <NoMatch />}
 
         {top && (
           <section aria-labelledby="breakdown-title" className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-start">
@@ -164,8 +167,22 @@ function leadSentence(score: ChairScore) {
   return reason ? LEAD_SENTENCE[reason.label] : null;
 }
 
-function TopMatch({ score }: { score: ChairScore }) {
+function TopMatch({ score, topSlugs }: { score: ChairScore; topSlugs: string[] }) {
+  const router = useRouter();
   const { chair } = score;
+
+  // 기존 비교 목록을 상위 모델로 바꾼다. 실수였다면 토스트에서 되돌릴 수 있다.
+  function compareTop() {
+    const previous = compareActions.get();
+    compareActions.replace(topSlugs);
+    if (previous.length > 0 && previous.join() !== topSlugs.join()) {
+      showToast("비교 목록을 추천 상위 모델로 바꿨어요", {
+        label: "되돌리기",
+        onClick: () => compareActions.replace(previous),
+      });
+    }
+    router.push(compareHref(topSlugs));
+  }
   const color = chair.colors[0];
   const lead = leadSentence(score);
 
@@ -204,9 +221,11 @@ function TopMatch({ score }: { score: ChairScore }) {
           <Link href={`/chairs/${chair.slug}`} className={buttonClass({ size: "l" })}>
             자세히 보기
           </Link>
-          <Link href="/chairs" className={buttonClass({ size: "l", variant: "secondary" })}>
-            다른 의자 둘러보기
-          </Link>
+          {topSlugs.length >= 2 && (
+            <button type="button" onClick={compareTop} className={buttonClass({ size: "l", variant: "secondary" })}>
+              상위 {topSlugs.length}개 비교하기
+            </button>
+          )}
         </div>
       </div>
     </section>

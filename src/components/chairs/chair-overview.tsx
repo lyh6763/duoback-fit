@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { CautionNote } from "@/components/brand/caution-note";
+import { CompareButton } from "@/components/compare/compare-toggle";
 import { DataCard } from "@/components/data/data-card";
 import { FitGauge } from "@/components/data/fit-gauge";
 import { ReasonList } from "@/components/data/reason-list";
@@ -81,6 +82,7 @@ export function ChairOverview({ chair }: { chair: Chair }) {
 
         <BodyFitSpecs chair={chair} />
         <FitPanel chair={chair} />
+        <CompareButton slug={chair.slug} />
       </div>
     </div>
   );
