@@ -31,7 +31,7 @@
 | 프레임워크 | Next.js 16 (App Router, Turbopack) · React 19 · TypeScript |
 | 렌더링 | 모든 페이지 정적 생성. 상품 상세는 `generateStaticParams` + `dynamicParams = false` |
 | 스타일 | Tailwind CSS v4 — `@theme` 토큰이 디자인 스펙(`docs/04-ui-spec.md`)과 1:1 대응 |
-| 데이터 | zod 스키마로 검증하는 정적 데이터 (`src/data/chairs.ts`) |
+| 데이터 | `zod/mini` 스키마로 검증하는 정적 데이터 (`src/data/chairs.ts`). 클래식 zod 대비 브라우저 JS를 라우트당 약 68KB(gzip) 줄임 |
 | 상태 | `useSyncExternalStore` 기반 Web Storage 스토어 (프로필: localStorage, 진행 중 답변: sessionStorage) |
 | 테스트 | Vitest — 매칭 로직과 데이터 정합성 · Playwright — 주요 사용 흐름, axe 접근성 검사(WCAG 2.1 AA), SEO 메타데이터 |
 | SEO | 페이지별 메타데이터, canonical, JSON-LD `Product`, sitemap, robots |
@@ -67,6 +67,7 @@ npm run typecheck   # 라우트 타입 생성 + tsc
 npm test            # Vitest
 npm run build       # 프로덕션 빌드
 npm run test:e2e    # Playwright E2E (프로덕션 빌드를 3100 포트에 띄워 데스크톱·모바일로 실행)
+npm run measure:js  # 빌드 후 라우트별 브라우저 JS 크기(원본·gzip) 측정
 ```
 
 ### OG 이미지 폰트

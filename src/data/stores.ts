@@ -1,13 +1,15 @@
-import { z } from "zod";
+import * as z from "zod/mini";
+
+const nonEmpty = () => z.string().check(z.minLength(1));
 
 const storeSchema = z.object({
-  id: z.string().regex(/^[a-z0-9-]+$/),
-  name: z.string().min(1),
-  region: z.string().min(1),
-  address: z.string().min(1),
-  phone: z.string().regex(/^0\d{1,2}-\d{3,4}-\d{4}$/),
+  id: z.string().check(z.regex(/^[a-z0-9-]+$/)),
+  name: nonEmpty(),
+  region: nonEmpty(),
+  address: nonEmpty(),
+  phone: z.string().check(z.regex(/^0\d{1,2}-\d{3,4}-\d{4}$/)),
   hours: z.object({ weekday: z.string(), weekend: z.string() }),
-  displayModels: z.array(z.string()).min(1),
+  displayModels: z.array(z.string()).check(z.minLength(1)),
 });
 
 export type Store = z.infer<typeof storeSchema>;

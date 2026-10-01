@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const SITTERS = ["self", "child"] as const;
 export const HOURS = ["lt3", "3to6", "6to9", "gt9"] as const;
@@ -11,17 +11,17 @@ export const WEIGHT_RANGE = { min: 25, max: 150 } as const;
 
 export const profileSchema = z.object({
   sitter: z.enum(SITTERS),
-  heightCm: z.number().int().min(HEIGHT_RANGE.min).max(HEIGHT_RANGE.max),
-  weightKg: z.number().int().min(WEIGHT_RANGE.min).max(WEIGHT_RANGE.max),
+  heightCm: z.int().check(z.minimum(HEIGHT_RANGE.min), z.maximum(HEIGHT_RANGE.max)),
+  weightKg: z.int().check(z.minimum(WEIGHT_RANGE.min), z.maximum(WEIGHT_RANGE.max)),
   hours: z.enum(HOURS),
   purpose: z.enum(PURPOSES),
   // 빈 배열 = "불편한 곳 없음"
-  concerns: z.array(z.enum(CONCERNS)).max(CONCERNS.length),
+  concerns: z.array(z.enum(CONCERNS)).check(z.maxLength(CONCERNS.length)),
   budget: z.enum(BUDGETS),
 });
 
 /** 질문 진행 중 상태. 키가 없으면 아직 답하지 않은 질문이다. */
-export const draftSchema = profileSchema.partial();
+export const draftSchema = z.partial(profileSchema);
 
 export type Profile = z.infer<typeof profileSchema>;
 export type Draft = z.infer<typeof draftSchema>;

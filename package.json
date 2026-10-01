@@ -10,7 +10,8 @@
     "test": "vitest run",
     "typecheck": "next typegen && tsc --noEmit",
     "fonts:og": "node scripts/subset-og-fonts.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "measure:js": "node scripts/measure-js.mjs"
   },
   "dependencies": {
     "next": "16.3.8",

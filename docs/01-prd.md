@@ -220,7 +220,7 @@ type Store = {
 | 렌더링 | 상품, 매장, 안내 페이지는 SSG. Fit Finder와 비교는 Client Component | 상품 페이지는 검색 노출, 개인화 영역은 클라이언트 |
 | 스타일 | Tailwind CSS v4(`@theme` 토큰) | Figma Variables와 코드 토큰을 1:1로 대응 |
 | 상태 | `useSyncExternalStore` 기반 Web Storage 스토어 (v0.2: Zustand 대신) | 프로필·진행 중 답변 두 개뿐이라 라이브러리 없이 충분. 하이드레이션 전에는 `undefined`로 "아직 모름"을 구분 |
-| 데이터 검증 | zod | 정적 데이터의 타입과 런타임 검증 |
+| 데이터 검증 | zod (v0.2: `zod/mini`) | 정적 데이터의 타입과 런타임 검증. 클래식 zod는 모든 로케일을 함께 번들해 브라우저 JS의 약 1/3을 차지했다 |
 | 테스트 | Vitest(매칭 로직, 데이터), Playwright(Fit Finder → 결과 → 비교 E2E) | 핵심 로직의 결정성 보장 |
 | 이미지 | `next/image` | 반응형 이미지, 지연 로딩 |
 | 배포 | Vercel | Next.js 기능(OG 이미지, 이미지 최적화)을 제약 없이 사용 |
