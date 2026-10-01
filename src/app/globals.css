@@ -1,26 +1,146 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * 디자인 토큰 — docs/04-ui-spec.md 1장과 1:1 대응.
+ * Tailwind 기본 색상은 지우고 스펙에 정의된 색만 남긴다.
+ * 시맨틱 토큰 이름 대응표는 docs/04-ui-spec.md 5장 참고.
+ */
+@theme {
+  --color-*: initial;
+
+  /* Primitive */
+  --color-white: #ffffff;
+  --color-paper-50: #fbf8f4;
+  --color-paper-100: #f6f1ea;
+  --color-sand-200: #e8dfd2;
+  --color-sand-300: #d6caba;
+  --color-stone-400: #a39b90;
+  --color-stone-500: #6b655d;
+  --color-stone-600: #5a554e;
+  --color-ink-900: #22201c;
+  --color-moss-50: #e6efeb;
+  --color-moss-100: #c9ddd5;
+  --color-moss-500: #3e7465;
+  --color-moss-600: #2f5d50;
+  --color-moss-700: #244a40;
+  --color-clay-50: #f8e9e1;
+  --color-clay-400: #d9774b;
+  --color-clay-700: #a9502a;
+  --color-amber-50: #fbf1de;
+  --color-amber-600: #b7791f;
+  --color-amber-700: #8a5a12;
+  --color-red-600: #b42318;
+
+  /* Semantic — 브랜드 레이어 */
+  --color-canvas: var(--color-paper-100);
+  --color-surface: var(--color-sand-200);
+  --color-elevated: var(--color-paper-50);
+  --color-line: var(--color-sand-300);
+  --color-ink: var(--color-ink-900);
+  --color-muted: var(--color-stone-500);
+  --color-muted-strong: var(--color-stone-600);
+  --color-inverse: var(--color-paper-50);
+  --color-primary: var(--color-moss-600);
+  --color-primary-hover: var(--color-moss-700);
+  --color-primary-subtle: var(--color-moss-50);
+  --color-highlight-bg: var(--color-clay-50);
+  --color-highlight: var(--color-clay-700);
+  --color-focus: var(--color-moss-500);
+  /* 스튜디오 사진 배경의 평균색. 사진 컨테이너에 깔아 경계가 드러나지 않게 한다. */
+  --color-photo: #f7f3f0;
+
+  /* Semantic — 데이터 레이어 */
+  --color-data-surface: var(--color-white);
+  --color-data-line: var(--color-sand-300);
+  --color-data-track: var(--color-sand-200);
+  --color-data-range: var(--color-moss-600);
+  --color-data-range-soft: var(--color-moss-100);
+  --color-data-marker: var(--color-clay-400);
+  --color-data-tick: var(--color-stone-400);
+  --color-data-label: var(--color-stone-500);
+  --color-data-value: var(--color-ink-900);
+  --color-data-best: var(--color-moss-700);
+
+  /* Semantic — 피드백 */
+  --color-warning: var(--color-amber-700);
+  --color-warning-icon: var(--color-amber-600);
+  --color-warning-bg: var(--color-amber-50);
+  --color-error: var(--color-red-600);
+
+  /* Typography */
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-fraunces), "Pretendard Variable", serif;
+
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+  --text-3xl: 36px;
+  --text-4xl: 48px;
+  --text-5xl: 64px;
+
+  --tracking-tight: -0.02em;
+  --tracking-label: 0.04em;
+
+  /* Radius */
+  --radius-data: 12px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px rgb(34 32 28 / 0.06);
+  --shadow-md: 0 6px 20px rgb(34 32 28 / 0.08);
+  --shadow-lg: 0 16px 40px rgb(34 32 28 / 0.12);
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@utility page-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1440px;
+  padding-inline: 20px;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @media (width >= 768px) {
+    padding-inline: 32px;
+  }
+
+  @media (width >= 1280px) {
+    padding-inline: 80px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
