@@ -1,5 +1,4 @@
 import { useSyncExternalStore } from "react";
-import type { ZodMiniType } from "zod/mini";
 
 type Listener = () => void;
 
@@ -7,8 +6,13 @@ type Listener = () => void;
  * Web Storage 값을 검증된 타입으로 구독하는 작은 외부 스토어.
  * - 시크릿 모드 등에서 Storage 접근이 막히면 메모리에만 보관한다.
  * - 서버 렌더와 하이드레이션 중에는 `undefined`(아직 모름)를 돌려준다.
+ * - parse는 JSON으로 읽은 값을 검증해 올바르면 값을, 아니면 null을 돌려준다.
  */
-export function createStorageStore<T>(key: string, area: "local" | "session", schema: ZodMiniType<T>) {
+export function createStorageStore<T>(
+  key: string,
+  area: "local" | "session",
+  parse: (value: unknown) => T | null,
+) {
   const listeners = new Set<Listener>();
   let memory: string | null = null;
   let cachedRaw: string | null | undefined;
@@ -38,8 +42,7 @@ export function createStorageStore<T>(key: string, area: "local" | "session", sc
       cachedValue = null;
     } else {
       try {
-        const parsed = schema.safeParse(JSON.parse(raw));
-        cachedValue = parsed.success ? parsed.data : null;
+        cachedValue = parse(JSON.parse(raw));
       } catch {
         cachedValue = null;
       }

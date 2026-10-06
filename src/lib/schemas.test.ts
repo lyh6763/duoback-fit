@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { getChair } from "@/data/chairs";
 import { chairSchema } from "@/lib/chairs/schema";
-import { draftSchema, profileSchema, type Profile } from "@/lib/fit/profile";
+import { type Profile } from "@/lib/fit/profile";
+import { draftSchema, profileSchema } from "@/lib/fit/profile.schema";
 
 /**
  * zod/mini로 옮긴 스키마가 잘못된 값을 여전히 거부하는지 확인한다.

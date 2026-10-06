@@ -5,6 +5,12 @@ export const COMPARE_MAX = 3;
 
 export type AddResult = "added" | "exists" | "full";
 
+/** 저장소에서 읽은 비교 목록 검증. 문자열 배열(최대 10개)만 통과시킨다. 모르는 slug는 sanitizeCompareList가 거른다. */
+export function parseSlugList(value: unknown): string[] | null {
+  if (!Array.isArray(value) || value.length > 10) return null;
+  return value.every((item) => typeof item === "string") ? [...value] : null;
+}
+
 /** 알 수 없는 slug와 중복을 걸러내고 최대 개수로 자른다. 순서는 유지한다. */
 export function sanitizeCompareList(slugs: readonly string[]) {
   const seen = new Set<string>();

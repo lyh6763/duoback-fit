@@ -8,7 +8,7 @@ import {
   formatSeatRange,
   recommendedHeightRange,
 } from "@/lib/chairs/format";
-import type { Chair } from "@/lib/chairs/schema";
+import type { Chair } from "@/lib/chairs/types";
 
 type Row = { label: string; value: string; note?: string };
 

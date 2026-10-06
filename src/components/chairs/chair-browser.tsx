@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { buttonClass } from "@/components/ui/button";
 import { CHAIRS } from "@/data/chairs";
 import { CATEGORY_LABEL } from "@/lib/chairs/format";
-import { CATEGORIES, type Chair } from "@/lib/chairs/schema";
+import { CATEGORIES, type Chair } from "@/lib/chairs/types";
 import { scoreChair } from "@/lib/fit/score";
 import { profileStore } from "@/lib/fit/store";
 import { ChairCard } from "./chair-card";

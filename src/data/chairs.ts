@@ -1,12 +1,14 @@
-import * as z from "zod/mini";
-import { chairSchema } from "@/lib/chairs/schema";
+import type { Chair } from "@/lib/chairs/types";
 
 /**
  * 포트폴리오용 가상 데이터. 실제 제품 스펙과 무관하다.
  * 스펙은 스튜디오 사진(public/images/chairs)에 보이는 구조에 맞춰 작성했다.
  * 이미지 규칙: /images/chairs/{slug}-{color.slug}-{angle}.jpg
+ *
+ * 데이터는 빌드 때 고정되므로 브라우저에서 다시 검증하지 않는다.
+ * 형태는 타입이, 값의 제약(정규식, 범위 등)은 chairs.test.ts가 zod 스키마로 검증한다.
  */
-const RAW_CHAIRS = [
+export const CHAIRS: readonly Chair[] = [
   {
     slug: "q1w",
     name: "Q1W 메쉬",
@@ -168,8 +170,6 @@ const RAW_CHAIRS = [
     },
   },
 ];
-
-export const CHAIRS = z.array(chairSchema).parse(RAW_CHAIRS);
 
 export function getChair(slug: string) {
   return CHAIRS.find((chair) => chair.slug === slug);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { getChair } from "@/data/chairs";
-import type { Chair } from "@/lib/chairs/schema";
+import type { Chair } from "@/lib/chairs/types";
 import {
   addToCompareList,
   compareHref,

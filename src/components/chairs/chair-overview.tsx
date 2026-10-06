@@ -22,7 +22,7 @@ import {
   formatSeatRange,
   recommendedHeightRange,
 } from "@/lib/chairs/format";
-import type { Chair } from "@/lib/chairs/schema";
+import type { Chair } from "@/lib/chairs/types";
 import { scoreChair } from "@/lib/fit/score";
 import { profileStore } from "@/lib/fit/store";
 import { ColorSwatches } from "./color-swatches";

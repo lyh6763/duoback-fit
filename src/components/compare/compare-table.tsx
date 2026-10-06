@@ -6,7 +6,7 @@ import { CautionNote } from "@/components/brand/caution-note";
 import { FitGauge } from "@/components/data/fit-gauge";
 import { ScoreBadge } from "@/components/data/score-badge";
 import { chairImage } from "@/lib/chairs/format";
-import type { Chair } from "@/lib/chairs/schema";
+import type { Chair } from "@/lib/chairs/types";
 import { COMPARE_MAX } from "@/lib/compare/list";
 import { buildCompareGroups, onlyDifferences, type CompareGroup, type CompareRow } from "@/lib/compare/rows";
 import type { Profile } from "@/lib/fit/profile";
