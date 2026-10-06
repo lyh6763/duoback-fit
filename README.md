@@ -31,12 +31,34 @@
 | 프레임워크 | Next.js 16 (App Router, Turbopack) · React 19 · TypeScript |
 | 렌더링 | 모든 페이지 정적 생성. 상품 상세는 `generateStaticParams` + `dynamicParams = false` |
 | 스타일 | Tailwind CSS v4 — `@theme` 토큰이 디자인 스펙(`docs/04-ui-spec.md`)과 1:1 대응 |
-| 데이터 | `zod/mini` 스키마로 검증하는 정적 데이터 (`src/data/chairs.ts`). 클래식 zod 대비 브라우저 JS를 라우트당 약 68KB(gzip) 줄임 |
+| 데이터 | 타입이 지정된 정적 데이터 (`src/data/chairs.ts`). zod 스키마는 테스트에서만 데이터를 검증하고, 브라우저 저장소 값은 손으로 쓴 파서가 검증(시드 고정 대조 테스트로 zod와 같은 판정을 보장). ESLint가 앱 코드의 zod import를 막음 |
 | 상태 | `useSyncExternalStore` 기반 Web Storage 스토어 (프로필: localStorage, 진행 중 답변: sessionStorage) |
 | 테스트 | Vitest — 매칭 로직과 데이터 정합성 · Playwright — 주요 사용 흐름, axe 접근성 검사(WCAG 2.1 AA), SEO 메타데이터 |
 | SEO | 페이지별 메타데이터, canonical, JSON-LD `Product`, sitemap, robots |
 | OG 이미지 | `next/og`로 사이트·상품별 1200×630 이미지를 빌드 시 정적 생성. 상품 이미지에 권장 키·좌판 높이 게이지 표시 |
-| CI | GitHub Actions: lint → typecheck → test → build → E2E (실패 시 Playwright 리포트를 아티팩트로 업로드) |
+| CI | GitHub Actions: lint → typecheck → test → build → 폰트 글자 검사 → E2E (실패 시 Playwright 리포트를 아티팩트로 업로드) |
+
+## 성능
+
+운영 사이트를 Lighthouse 13.5(모바일, 기본 시뮬레이션 스로틀링)로 측정한 결과입니다. 페이지당 3회 측정한 중앙값이며, 처음 값만 1회 측정입니다.
+
+| 페이지 | 처음 | 폰트 자체 호스팅·AVIF | 클라이언트 JS 감량 | 폰트 서브셋 1개 | LCP (처음 → 지금) |
+|---|---|---|---|---|---|
+| `/` | 77 | 81 | 88 | **97** | 4.5s → 2.3s |
+| `/chairs` | 76 | 81 | 84 | **94** | 4.8s → 2.8s |
+| `/chairs/q1w` | 74 | 80 | 84 | **97** | 5.1s → 2.4s |
+| `/fit` | 81 | 89 | 88 | **96** | 4.1s → 2.4s |
+| `/fit/method` | 76 | 76 | 77 | **98** | 4.5s → 2.3s |
+| `/compare` | 79 | 86 | 88 | **97** | 4.4s → 2.3s |
+| `/stores` | 76 | 76 | 81 | **97** | 4.8s → 2.5s |
+
+접근성·권장사항·SEO는 모든 페이지가 100입니다(`/compare`는 쿼리 조합 페이지라 의도적으로 `noindex`여서 SEO 63).
+
+1. **폰트 자체 호스팅·AVIF:** Pretendard CDN `@import`를 같은 도메인 제공으로 바꿔 다른 도메인 연결과 CSS 연쇄 요청을 없앴습니다. 이미지는 AVIF로 제공합니다.
+2. **클라이언트 JS 감량:** zod를 브라우저 번들에서 빼서 라우트당 JS를 171KB에서 150KB(gzip)로 줄였습니다. 메인 스레드 작업이 33~36% 줄었습니다.
+3. **폰트 서브셋 1개:** Pretendard 요청만 막아 보는 실험에서 점수가 96~97로 올라, 남은 차이가 폰트 때문임을 확인했습니다.
+   동적 서브셋은 레이아웃 뒤에야 필요한 조각 10~15개(250~380KB)를 요청해 첫 화면이 폰트를 기다렸습니다.
+   지금은 사이트 글자만 남긴 80KB 파일 하나를 preload하고 `font-display: optional`로 그려서, 첫 화면(FCP)이 2.1~2.9초에서 0.8~0.9초가 됐습니다.
 
 ## 구조
 
