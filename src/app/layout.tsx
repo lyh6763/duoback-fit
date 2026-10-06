@@ -1,14 +1,23 @@
 import type { Metadata } from "next";
 import { Fraunces } from "next/font/google";
+import localFont from "next/font/local";
 import { CompareTray } from "@/components/compare/compare-tray";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { Toaster } from "@/components/site/toaster";
 import { SITE_URL } from "@/lib/site-url";
-// Pretendard를 같은 도메인에서 제공한다. 글자 범위별로 쪼갠 woff2 92개 중 화면에 쓰인 글자의 파일만 내려받는다.
-// (CDN @import는 다른 도메인 연결 + CSS 연쇄 요청 때문에 첫 화면을 약 0.8초 막았다)
-import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
+
+// 본문 서체. 사이트에 나오는 글자만 남긴 Pretendard 가변 폰트 파일 하나(약 80KB)를 preload한다.
+// 글자가 바뀌면 `npm run build && npm run fonts:web`으로 다시 만든다(CI가 빠진 글자를 검사한다).
+// optional: 첫 화면까지 폰트가 오지 않으면 시스템 서체로 그리고 바꾸지 않는다(깜빡임·폰트 대기 없음). 다음 방문부터는 캐시에서 바로 쓴다.
+const pretendard = localFont({
+  src: "./fonts/pretendard-site.woff2",
+  variable: "--font-pretendard",
+  weight: "400 700",
+  display: "optional",
+  adjustFontFallback: false,
+});
 
 // 숫자·영문 강조 전용 디스플레이 서체. 한글은 Pretendard(globals.css)로 렌더링된다.
 const fraunces = Fraunces({
@@ -30,7 +39,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ko" className={`${fraunces.variable} h-full`}>
+    <html lang="ko" className={`${pretendard.variable} ${fraunces.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <a
           href="#main"

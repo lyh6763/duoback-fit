@@ -68,8 +68,10 @@
   --color-error: var(--color-red-600);
 
   /* Typography */
-  --font-sans: "Pretendard Variable", Pretendard, system-ui, -apple-system, sans-serif;
-  --font-display: var(--font-fraunces), "Pretendard Variable", serif;
+  --font-sans:
+    var(--font-pretendard), -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Malgun Gothic",
+    "Noto Sans KR", sans-serif;
+  --font-display: var(--font-fraunces), var(--font-sans);
 
   --text-xs: 12px;
   --text-sm: 14px;
