@@ -21,11 +21,12 @@ import { ColorSwatches } from "./color-swatches";
 export function ChairCard({
   chair,
   score,
-  priority = false,
+  eager = false,
 }: {
   chair: Chair;
   score?: number;
-  priority?: boolean;
+  /** 첫 화면에 보이는 카드. 그리드는 화면 너비에 따라 LCP 후보가 바뀌어 preload 대신 즉시 로드 + 높은 우선순위를 준다. */
+  eager?: boolean;
 }) {
   const [color, setColor] = useState(chair.colors[0].slug);
   const colorName = chair.colors.find((c) => c.slug === color)?.name;
@@ -42,7 +43,8 @@ export function ChairCard({
             width={600}
             height={600}
             sizes="(min-width: 1280px) 300px, (min-width: 768px) 33vw, 50vw"
-            priority={priority}
+            loading={eager ? "eager" : "lazy"}
+            fetchPriority={eager ? "high" : undefined}
             className="aspect-square w-full object-cover transition-transform duration-300 ease-standard group-hover:scale-[1.03]"
           />
         </Link>
