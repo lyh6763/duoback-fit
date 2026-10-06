@@ -32,6 +32,20 @@ test.describe("Site", () => {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   });
 
+  test("serves Pretendard from the same origin", async ({ page, baseURL }) => {
+    // CDN @import는 다른 도메인 연결 + CSS 연쇄 요청으로 첫 화면을 막았다(Lighthouse 추정 761ms)
+    const fontRequests: string[] = [];
+    page.on("request", (request) => {
+      if (request.resourceType() === "font" || request.url().includes("pretendard")) fontRequests.push(request.url());
+    });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+
+    expect(fontRequests.length).toBeGreaterThan(0);
+    for (const url of fontRequests) expect(new URL(url).origin).toBe(new URL(baseURL!).origin);
+    expect(await page.evaluate(() => document.fonts.check('16px "Pretendard Variable"', "가"))).toBe(true);
+  });
+
   test("returns 404 for unknown pages and chairs", async ({ page }) => {
     for (const path of ["/nope", "/chairs/nope"]) {
       const response = await page.goto(path);
