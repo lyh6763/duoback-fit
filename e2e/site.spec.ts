@@ -17,6 +17,10 @@ test.describe("Site", () => {
       expect(
         serious.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`),
       ).toEqual([]);
+
+      // 제목 단계(h1 → h3 건너뜀)는 WCAG 태그가 없는 moderate 규칙이라 위 필터에 걸리지 않아 따로 확인한다
+      const headings = await new AxeBuilder({ page }).withRules(["heading-order"]).analyze();
+      expect(headings.violations.flatMap((v) => v.nodes.map((n) => n.target.join(" ")))).toEqual([]);
     });
   }
 

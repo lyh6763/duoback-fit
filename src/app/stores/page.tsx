@@ -17,18 +17,24 @@ export default function StoresPage() {
         <p className="text-muted">결국은 앉아봐야 알아요. 보고 싶은 모델을 고르면 전시 매장만 보여드려요.</p>
       </header>
 
-      {/* 필터는 URL 쿼리를 읽는 클라이언트 영역이다. 초기 HTML에는 전체 매장을 담는다. */}
-      <Suspense
-        fallback={
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {STORES.map((store) => (
-              <StoreCard key={store.id} store={store} />
-            ))}
-          </div>
-        }
-      >
-        <StoreBrowser />
-      </Suspense>
+      {/* 카드 제목(h3) 위에 목록 제목(h2)을 둬서 h1 → h3로 건너뛰지 않게 한다. 화면에는 보이지 않는다. */}
+      <section aria-labelledby="store-list-title">
+        <h2 id="store-list-title" className="sr-only">
+          매장 목록
+        </h2>
+        {/* 필터는 URL 쿼리를 읽는 클라이언트 영역이다. 초기 HTML에는 전체 매장을 담는다. */}
+        <Suspense
+          fallback={
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {STORES.map((store) => (
+                <StoreCard key={store.id} store={store} />
+              ))}
+            </div>
+          }
+        >
+          <StoreBrowser />
+        </Suspense>
+      </section>
 
       <p className="text-xs text-muted">
         포트폴리오용 가상 매장입니다. 주소와 전화번호는 실제 장소·번호가 아닙니다.
