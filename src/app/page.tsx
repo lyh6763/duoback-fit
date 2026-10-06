@@ -55,7 +55,7 @@ export default function HomePage() {
               width={1254}
               height={1254}
               sizes="(min-width: 1024px) 50vw, 100vw"
-              priority
+              preload
               className="aspect-[4/3] w-full object-contain"
             />
           </div>

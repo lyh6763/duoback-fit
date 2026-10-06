@@ -196,7 +196,7 @@ function TopMatch({ score, topSlugs }: { score: ChairScore; topSlugs: string[] }
           width={1254}
           height={1254}
           sizes="(min-width: 1024px) 50vw, 100vw"
-          priority
+          preload
           className="aspect-square w-full object-contain"
         />
       </div>

@@ -10,6 +10,7 @@ import { CATEGORIES, type Chair } from "@/lib/chairs/types";
 import { scoreChair } from "@/lib/fit/score";
 import { profileStore } from "@/lib/fit/store";
 import { ChairCard } from "./chair-card";
+import { EAGER_CARDS } from "./grid";
 
 const SORTS = {
   recommended: "추천순",
@@ -145,7 +146,7 @@ export function ChairBrowser() {
       ) : (
         <div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-3 lg:gap-x-6">
           {chairs.map((chair, index) => (
-            <ChairCard key={chair.slug} chair={chair} score={scores.get(chair.slug)} priority={index < 3} />
+            <ChairCard key={chair.slug} chair={chair} score={scores.get(chair.slug)} eager={index < EAGER_CARDS} />
           ))}
         </div>
       )}

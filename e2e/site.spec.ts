@@ -81,6 +81,24 @@ test.describe("Site", () => {
     expect(image.headers()["content-type"]).toBe("image/png");
   });
 
+  test("starts loading LCP images from the initial HTML", async ({ request }) => {
+    // JS 실행 전 HTML만 본다. /chairs의 초기 HTML은 Suspense fallback이라 여기서 빠지면 LCP 이미지를 하이드레이션 뒤에야 받는다.
+    const chairsHtml = await (await request.get("/chairs")).text();
+    const cardImages = [...chairsHtml.matchAll(/<img [^>]*class="aspect-square[^"]*"[^>]*>/g)].map((m) => m[0]);
+    expect(cardImages.length).toBeGreaterThanOrEqual(5);
+    for (const img of cardImages.slice(0, 3)) {
+      expect(img).toContain('fetchPriority="high"');
+      expect(img).not.toContain('loading="lazy"');
+    }
+    for (const img of cardImages.slice(3)) expect(img).toContain('loading="lazy"');
+
+    // LCP가 하나로 정해진 대표 이미지는 <head>에서 preload한다
+    for (const path of ["/", "/chairs/q1w"]) {
+      const html = await (await request.get(path)).text();
+      expect(html, path).toMatch(/<link rel="preload" [^>]*as="image"/);
+    }
+  });
+
   test("lists every chair in the sitemap and hides results from robots", async ({ request }) => {
     const sitemap = await (await request.get("/sitemap.xml")).text();
     for (const slug of ["q1w", "d3hs", "d2500g", "dk073w", "d043w"]) expect(sitemap).toContain(`/chairs/${slug}`);

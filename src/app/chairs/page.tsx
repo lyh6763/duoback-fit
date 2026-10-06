@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ChairBrowser } from "@/components/chairs/chair-browser";
 import { ChairCard } from "@/components/chairs/chair-card";
+import { EAGER_CARDS } from "@/components/chairs/grid";
 import { CHAIRS } from "@/data/chairs";
 
 export const metadata: Metadata = {
@@ -21,12 +22,13 @@ export default function ChairsPage() {
         <h2 id="chair-list-title" className="sr-only">
           의자 목록
         </h2>
-        {/* 필터는 URL 쿼리를 읽는 클라이언트 영역이다. 초기 HTML에는 전체 목록을 담아 검색 엔진이 읽을 수 있게 한다. */}
+        {/* 필터는 URL 쿼리를 읽는 클라이언트 영역이다. 초기 HTML에는 전체 목록을 담아 검색 엔진이 읽을 수 있게 한다.
+            초기 HTML이 이 fallback이므로 첫 줄 이미지를 여기서 즉시 로드해야 LCP 이미지를 JS 실행 전에 받기 시작한다. */}
         <Suspense
           fallback={
             <div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-3 lg:gap-x-6">
-              {CHAIRS.map((chair) => (
-                <ChairCard key={chair.slug} chair={chair} />
+              {CHAIRS.map((chair, index) => (
+                <ChairCard key={chair.slug} chair={chair} eager={index < EAGER_CARDS} />
               ))}
             </div>
           }
