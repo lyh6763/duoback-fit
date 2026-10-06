@@ -1,8 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { CHAIRS, getChair } from "./chairs";
+import { storeSchema } from "./store.schema";
 import { STORES, storesWithModel } from "./stores";
 
 describe("store data", () => {
+  it.each(STORES.map((store) => [store.id, store]))("%s satisfies the store schema", (_, store) => {
+    const result = storeSchema.safeParse(store);
+    expect(result.success, JSON.stringify(result.error?.issues)).toBe(true);
+  });
+
   it("has unique ids", () => {
     const ids = STORES.map((store) => store.id);
     expect(new Set(ids).size).toBe(ids.length);

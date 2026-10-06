@@ -9,7 +9,7 @@ import {
   formatSeatRange,
   recommendedHeightRange,
 } from "@/lib/chairs/format";
-import type { Chair, ChairSpec } from "@/lib/chairs/schema";
+import type { Chair, ChairSpec } from "@/lib/chairs/types";
 
 export type CompareRow = {
   key: string;

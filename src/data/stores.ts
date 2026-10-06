@@ -1,24 +1,19 @@
-import * as z from "zod/mini";
-
-const nonEmpty = () => z.string().check(z.minLength(1));
-
-const storeSchema = z.object({
-  id: z.string().check(z.regex(/^[a-z0-9-]+$/)),
-  name: nonEmpty(),
-  region: nonEmpty(),
-  address: nonEmpty(),
-  phone: z.string().check(z.regex(/^0\d{1,2}-\d{3,4}-\d{4}$/)),
-  hours: z.object({ weekday: z.string(), weekend: z.string() }),
-  displayModels: z.array(z.string()).check(z.minLength(1)),
-});
-
-export type Store = z.infer<typeof storeSchema>;
+export type Store = {
+  id: string;
+  name: string;
+  region: string;
+  address: string;
+  phone: string;
+  hours: { weekday: string; weekend: string };
+  displayModels: string[];
+};
 
 /**
  * 포트폴리오용 가상 매장. 주소와 전화번호는 실제 장소·번호가 아니다.
  * 전화번호는 실제로 걸리지 않도록 국번을 0000으로 둔다.
+ * 값의 제약은 stores.test.ts가 store.schema.ts로 검증한다(브라우저에서는 검증하지 않음).
  */
-const RAW_STORES = [
+export const STORES: readonly Store[] = [
   {
     id: "gangnam",
     name: "강남 쇼룸",
@@ -65,8 +60,6 @@ const RAW_STORES = [
     displayModels: ["q1w", "dk073w"],
   },
 ];
-
-export const STORES = z.array(storeSchema).parse(RAW_STORES);
 
 export function storesWithModel(slug: string) {
   return STORES.filter((store) => store.displayModels.includes(slug));

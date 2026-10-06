@@ -1,4 +1,4 @@
-import type { Chair, ChairSpec } from "@/lib/chairs/schema";
+import type { Chair, ChairSpec } from "@/lib/chairs/types";
 import {
   BUDGET_LIMIT,
   CONCERN_LABEL,

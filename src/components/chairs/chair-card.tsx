@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { CompareIconToggle } from "@/components/compare/compare-toggle";
 import { ScoreBadge } from "@/components/data/score-badge";
-import type { Chair } from "@/lib/chairs/schema";
+import type { Chair } from "@/lib/chairs/types";
 import {
   CATEGORY_LABEL,
   chairImage,

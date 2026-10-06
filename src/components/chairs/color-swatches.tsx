@@ -1,6 +1,6 @@
 "use client";
 
-import type { Chair } from "@/lib/chairs/schema";
+import type { Chair } from "@/lib/chairs/types";
 
 /** 토글 버튼 그룹. 각 버튼이 Tab으로 닿으므로 방향키 처리가 필요 없다. */
 export function ColorSwatches({

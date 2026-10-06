@@ -1,7 +1,11 @@
 import * as z from "zod/mini";
+import { CATEGORIES, type Chair } from "./types";
 
-export const CATEGORIES = ["office", "student"] as const;
-export const ANGLES = ["front", "left", "right", "rear"] as const;
+/**
+ * 의자 데이터의 런타임 제약. 데이터는 빌드 때 고정되므로 브라우저에서는 검사하지 않고,
+ * src/data/chairs.test.ts가 모든 데이터를 이 스키마로 검증한다(CI에서 머지 전에 실행).
+ * 이 파일은 테스트에서만 import한다 — 브라우저 번들에 zod가 들어가지 않게 하기 위해서다.
+ */
 
 const positiveInt = () => z.int().check(z.positive());
 
@@ -27,7 +31,6 @@ export const chairSchema = z.object({
     )
     .check(z.minLength(1)),
   spec: z.object({
-    // min === max 이면 높이 고정형
     seatHeightMm: rangeMm,
     seatDepthAdjust: z.boolean(),
     backHeightMm: positiveInt(),
@@ -48,7 +51,6 @@ export const chairSchema = z.object({
   }),
 });
 
-export type Chair = z.infer<typeof chairSchema>;
-export type ChairCategory = Chair["category"];
-export type ChairSpec = Chair["spec"];
-export type Angle = (typeof ANGLES)[number];
+/** 손으로 쓴 Chair 타입과 스키마가 추론하는 타입이 정확히 같아야 컴파일된다. */
+type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends <T>() => T extends B ? 1 : 2 ? true : false;
+export const chairTypeMatchesSchema: Equal<z.infer<typeof chairSchema>, Chair> = true;

@@ -29,7 +29,14 @@ const zodChunks = new Set();
 
 for (const [route, file] of Object.entries(ROUTES)) {
   const html = readFileSync(join(appDir, file), "utf8");
-  const sources = [...new Set([...html.matchAll(/<script[^>]+src="([^"]+\.js)"/g)].map((m) => m[1]))];
+  // noModule 스크립트(구형 브라우저용 polyfill)는 최신 브라우저가 내려받지 않으므로 뺀다
+  const sources = [
+    ...new Set(
+      [...html.matchAll(/<script([^>]*)src="([^"]+\.js)"([^>]*)>/g)]
+        .filter((m) => !/noModule/i.test(m[1] + m[3]))
+        .map((m) => m[2]),
+    ),
+  ];
   let raw = 0;
   let gzip = 0;
   for (const src of sources) {

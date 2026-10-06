@@ -1,9 +1,14 @@
 import { useMemo, useSyncExternalStore } from "react";
-import * as z from "zod/mini";
 import { createStorageStore } from "@/lib/storage";
-import { addToCompareList, removeFromCompareList, sanitizeCompareList, type AddResult } from "./list";
+import {
+  addToCompareList,
+  parseSlugList,
+  removeFromCompareList,
+  sanitizeCompareList,
+  type AddResult,
+} from "./list";
 
-const store = createStorageStore("duoback-fit:compare", "local", z.array(z.string()).check(z.maxLength(10)));
+const store = createStorageStore("duoback-fit:compare", "local", parseSlugList);
 
 /** 데이터에서 사라진 모델이 저장돼 있어도 걸러서 돌려준다. 하이드레이션 전에는 undefined. */
 export function useCompareList() {

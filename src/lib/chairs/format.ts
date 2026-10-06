@@ -1,4 +1,4 @@
-import { ANGLES, type Angle, type Chair, type ChairCategory, type ChairSpec } from "./schema";
+import { ANGLES, type Angle, type Chair, type ChairCategory, type ChairSpec } from "./types";
 import { SEAT_TOLERANCE_MM, heightForSeat } from "@/lib/fit/score";
 
 export const CATEGORY_LABEL: Record<ChairCategory, string> = {

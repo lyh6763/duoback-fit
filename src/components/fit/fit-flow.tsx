@@ -21,7 +21,7 @@ import {
   SITTER_LABEL,
   WEIGHT_RANGE,
   isPresetKey,
-  profileSchema,
+  parseProfile,
   type Concern,
   type Draft,
 } from "@/lib/fit/profile";
@@ -88,12 +88,12 @@ export function FitFlow() {
     const next = { ...current, ...patch };
     draftStore.set(next);
     if (step === TOTAL_STEPS) {
-      const parsed = profileSchema.safeParse(next);
-      if (!parsed.success) {
+      const profile = parseProfile(next);
+      if (!profile) {
         router.replace(`/fit?step=${firstUnanswered(next)}`);
         return;
       }
-      profileStore.set(parsed.data);
+      profileStore.set(profile);
       router.push("/fit/result");
       return;
     }
