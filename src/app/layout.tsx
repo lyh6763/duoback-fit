@@ -5,6 +5,9 @@ import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { Toaster } from "@/components/site/toaster";
 import { SITE_URL } from "@/lib/site-url";
+// Pretendard를 같은 도메인에서 제공한다. 글자 범위별로 쪼갠 woff2 92개 중 화면에 쓰인 글자의 파일만 내려받는다.
+// (CDN @import는 다른 도메인 연결 + CSS 연쇄 요청 때문에 첫 화면을 약 0.8초 막았다)
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
 
 // 숫자·영문 강조 전용 디스플레이 서체. 한글은 Pretendard(globals.css)로 렌더링된다.
