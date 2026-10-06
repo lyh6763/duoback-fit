@@ -25,6 +25,8 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      # 화면용 폰트 서브셋에 빌드 결과물의 글자가 모두 들어 있는지
+      - run: npm run fonts:web -- --check
 
       # E2E runs against the production build from the previous step
       - run: npx playwright install --with-deps chromium

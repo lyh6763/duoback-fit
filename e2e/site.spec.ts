@@ -36,18 +36,26 @@ test.describe("Site", () => {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   });
 
-  test("serves Pretendard from the same origin", async ({ page, baseURL }) => {
-    // CDN @import는 다른 도메인 연결 + CSS 연쇄 요청으로 첫 화면을 막았다(Lighthouse 추정 761ms)
+  test("serves Pretendard as one preloaded same-origin file", async ({ page, baseURL }) => {
+    // CDN @import는 다른 도메인 연결 + CSS 연쇄 요청으로 첫 화면을 막았고(Lighthouse 추정 761ms),
+    // 동적 서브셋은 페이지마다 조각 10~15개를 레이아웃 뒤에야 요청해 첫 화면이 폰트를 기다렸다.
     const fontRequests: string[] = [];
     page.on("request", (request) => {
-      if (request.resourceType() === "font" || request.url().includes("pretendard")) fontRequests.push(request.url());
+      if (request.resourceType() === "font" || /pretendard/i.test(request.url())) fontRequests.push(request.url());
     });
-    await page.goto("/");
+    await page.goto("/fit/method");
     await page.evaluate(() => document.fonts.ready);
 
-    expect(fontRequests.length).toBeGreaterThan(0);
     for (const url of fontRequests) expect(new URL(url).origin).toBe(new URL(baseURL!).origin);
-    expect(await page.evaluate(() => document.fonts.check('16px "Pretendard Variable"', "가"))).toBe(true);
+    // Pretendard 파일 1개 + Fraunces 1개
+    expect(fontRequests).toHaveLength(2);
+
+    const preloaded = await page.locator('link[rel="preload"][as="font"]').evaluateAll((links) => links.map((link) => (link as HTMLLinkElement).href));
+    expect(preloaded.sort()).toEqual([...fontRequests].sort());
+
+    // 본문 서체의 첫 family(next/font가 만든 이름)가 한글을 그릴 수 있게 로드됐는지
+    const family = await page.evaluate(() => getComputedStyle(document.body).fontFamily.split(",")[0]);
+    expect(await page.evaluate((name) => document.fonts.check(`16px ${name}`, "좌판 높이"), family)).toBe(true);
   });
 
   test("returns 404 for unknown pages and chairs", async ({ page }) => {

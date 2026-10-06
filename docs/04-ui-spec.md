@@ -127,8 +127,8 @@
 ### Typography
 
 ```
---font-family-base:    "Pretendard Variable", Pretendard, system-ui, sans-serif
---font-family-display: "Fraunces", "Pretendard Variable", serif
+--font-family-base:    Pretendard(사이트 글자 서브셋, optional), system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif
+--font-family-display: "Fraunces", var(--font-family-base)
 --font-feature-data:   "tnum" 1   /* font-variant-numeric: tabular-nums */
 
 --font-size-xs:  12px    --font-size-xl:  22px

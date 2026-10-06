@@ -70,6 +70,17 @@ npm run test:e2e    # Playwright E2E (프로덕션 빌드를 3100 포트에 띄�
 npm run measure:js  # 빌드 후 라우트별 브라우저 JS 크기(원본·gzip) 측정
 ```
 
+### 화면 폰트
+
+화면 본문은 사이트에 나오는 글자만 남긴 Pretendard 가변 폰트 파일 하나(`src/app/fonts/pretendard-site.woff2`, 약 80KB, 굵기 400~700)를 preload해서 씁니다.
+`font-display: optional`이라 첫 화면까지 폰트가 오지 않으면 시스템 서체로 그리고 도중에 바꾸지 않습니다.
+글자는 빌드 결과물(HTML·RSC·클라이언트 JS)에서 모으므로, 문구를 바꾼 뒤에는 다시 만들어 커밋합니다. 빠진 글자가 있으면 CI가 실패합니다.
+
+```bash
+npm run build && npm run fonts:web             # 서브셋과 글자 목록(pretendard-site.chars.txt) 재생성
+npm run build && npm run fonts:web -- --check  # 빠진 글자 검사(CI)
+```
+
 ### OG 이미지 폰트
 
 OG 렌더러(Satori)는 woff2를 읽지 못해 otf가 필요한데, Pretendard 원본은 굵기당 약 1.5MB입니다.
