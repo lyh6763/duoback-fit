@@ -14,7 +14,7 @@
 | 역할 | 감정, 신뢰, 브랜드 인상 | 근거, 비교, 판단 |
 | 적용 위치 | 페이지 배경, 히어로, 질문 화면, 카피, 버튼, 일러스트 | Fit 결과, FitGauge, 점수 내역, 스펙 표, 비교표 |
 | 배경 | 따뜻한 종이 톤 `paper-100`, 섹션 구분 `sand-200` | 흰색 데이터 카드 `white` + 헤어라인 보더 |
-| 형태 | 큰 라운드(24~32), 알약형 버튼과 칩 | 작은 라운드(12), 직선, 눈금 |
+| 형태 | 큰 라운드(24\~32), 알약형 버튼과 칩 | 작은 라운드(12), 직선, 눈금 |
 | 숫자 | 대표 숫자 하나만 Fraunces 디스플레이 | 그 외 모든 숫자는 Pretendard 고정폭 숫자(`tabular-nums`) |
 | 근거 표현 | 대화형 문장 ("허리를 잘 받쳐줘요") | 체크리스트 (✓ 요추 지지 조절) |
 | 색 | moss(브랜드), clay(나를 표시하는 강조) | moss 단계 색(데이터), clay(내 위치 마커), 중립 눈금 |
@@ -123,7 +123,7 @@
 | amber-600 on white | 3.6 | ⚠️ 아이콘·보더만 (텍스트 불가) |
 | clay-400 on white (마커) | 3.1 | ✅ 비텍스트 3:1 통과 → **마커는 흰 데이터 카드 위에만** |
 | moss-600 vs sand-200 (채운 막대 vs 트랙) | 5.7 | ✅ |
-| moss-100, stone-400 on white | 1.6~2.8 | ❌ 장식·보조 전용. 정보를 이 색만으로 전달하지 않음 |
+| moss-100, stone-400 on white | 1.6\~2.8 | ❌ 장식·보조 전용. 정보를 이 색만으로 전달하지 않음 |
 
 ### Typography
 
@@ -291,7 +291,7 @@
 
 #### ScoreBadge (v0.1 MatchBadge 대체)
 - **표기:** "적합도 92" (숫자는 Data/Value, 라벨은 Data/Label). `%`는 쓰지 않는다. 확률처럼 읽히지 않게 하기 위해서다.
-- **Variants:** High(85 이상) / Mid(70~84) / Low(70 미만) · 크기 S(카드 위) / L(결과 화면)
+- **Variants:** High(85 이상) / Mid(70\~84) / Low(70 미만) · 크기 S(카드 위) / L(결과 화면)
 - **토큰:** High는 bg `score-high` + text `text-inverse` / Mid는 bg `moss-50` + text `moss-700` / Low는 border `data-border` + text `stone-500`. radius `data`(알약형 아님)
 - 색만으로 단계를 구분하지 않고 숫자를 함께 표기한다.
 
@@ -313,7 +313,7 @@
   - 범위 양 끝에 최소·최대 값 라벨
 - **States:** InRange / BelowRange(마커가 범위 왼쪽 + 발받침 안내 연결) / AboveRange / Animating(결과 첫 진입 시 범위가 `duration-data`로 채워짐)
 - **배치 규칙:** 반드시 DataCard 안(흰 배경)에 둔다. 마커 대비 확보를 위해서다.
-- **접근성:** 텍스트 대체 "의자 조절 범위 420~520mm, 권장 높이 455mm, 범위 안"
+- **접근성:** 텍스트 대체 "의자 조절 범위 420\~520mm, 권장 높이 455mm, 범위 안"
 
 #### ScoreBreakdown (신규)
 - **용도:** S04 결과에서 적합도 점수의 구성을 공개한다. 추천 근거의 투명성을 보여주는 핵심 요소다.
@@ -326,7 +326,7 @@
 #### SpecTable
 - **용도:** S06 상세 사양
 - **구조:** 그룹 헤더(Caption, `stone-600`, 배경 `bg-surface`) + 행(라벨 Body/S `stone-500` / 값 Data/Value 오른쪽 정렬)
-- **몸 기준 해석:** 값 아래에 한 줄 보조 설명("키 158~198cm에 적합", Body/S `moss-700`)
+- **몸 기준 해석:** 값 아래에 한 줄 보조 설명("키 158\~198cm에 적합", Body/S `moss-700`)
 - **토큰:** 행 구분선 `border-hairline`, 줄무늬 없음
 
 #### CompareTable
@@ -344,7 +344,7 @@
 - **FilterPanel:** Desktop은 sticky 좌측 패널, Mobile은 바텀시트(적용 / 초기화 고정)
 
 #### CompareTray
-- **States:** Hidden(0개) / Partial(1개: "하나 더 담아주세요") / Ready(2~3개) / Full(3개, 추가 시 흔들림 320ms)
+- **States:** Hidden(0개) / Partial(1개: "하나 더 담아주세요") / Ready(2\~3개) / Full(3개, 추가 시 흔들림 320ms)
 - **Mobile:** 높이 80 압축 바(썸네일 + 비교하기). "비우기"는 비교 페이지에서 제공. *(v0.2: 접힘 칩 ↔ 바텀시트 대신 단순화)*
 
 #### StoreCard
@@ -363,7 +363,7 @@
 
 #### EmptyState
 - **Variants:** NoMatch(S04) / NoResult(S05) / CompareEmpty(S07) / NotFound(S11)
-- **구성:** 일러스트 + H3 + Body/M + 버튼 1~2개
+- **구성:** 일러스트 + H3 + Body/M + 버튼 1\~2개
 
 ---
 
@@ -401,6 +401,6 @@ Tailwind v4는 `--color-*` 이름이 그대로 클래스가 되므로(`bg-{name}
 | `color-feedback-error` | `--color-error` | `text-error` |
 | (신규) | `--color-photo` `#F7F3F0` | `bg-photo` |
 
-- **`--color-photo` (신규):** 스튜디오 사진 배경의 평균색(모서리 픽셀 샘플링 결과 `#F2EEEB`~`#FBF7F4`). 사진 컨테이너에 깔아 흰 카드 안에서 사진 경계가 박스처럼 드러나지 않게 한다.
+- **`--color-photo` (신규):** 스튜디오 사진 배경의 평균색(모서리 픽셀 샘플링 결과 `#F2EEEB`\~`#FBF7F4`). 사진 컨테이너에 깔아 흰 카드 안에서 사진 경계가 박스처럼 드러나지 않게 한다.
 - Tailwind 기본 팔레트는 `--color-*: initial`로 지워, 스펙에 없는 색을 쓸 수 없게 했다.
 - 간격은 Tailwind 기본 스케일(4px 단위)이 스펙의 `--space-*`와 같아 그대로 쓴다(`p-4` = `--space-4` = 16px).
