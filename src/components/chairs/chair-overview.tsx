@@ -45,6 +45,7 @@ export function ChairOverview({ chair }: { chair: Chair }) {
             height={1254}
             sizes="(min-width: 1024px) 58vw, 100vw"
             preload
+            fetchPriority="high"
             className="aspect-square w-full object-contain"
           />
         </div>
