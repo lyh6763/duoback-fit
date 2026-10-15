@@ -36,7 +36,7 @@
 | 테스트 | Vitest — 매칭 로직과 데이터 정합성 · Playwright — 주요 사용 흐름, axe 접근성 검사(WCAG 2.1 AA), SEO 메타데이터 |
 | SEO | 페이지별 메타데이터, canonical, JSON-LD `Product`, sitemap, robots |
 | OG 이미지 | `next/og`로 사이트·상품별 1200×630 이미지를 빌드 시 정적 생성. 상품 이미지에 권장 키·좌판 높이 게이지 표시 |
-| CI | GitHub Actions: lint → typecheck → test → build → 폰트 글자 검사 → E2E (실패 시 Playwright 리포트를 아티팩트로 업로드) |
+| CI | GitHub Actions: lint → typecheck → test → build → 폰트 글자 검사 → E2E (실패 시 Playwright 리포트를 아티팩트로 업로드). 병렬 작업으로 Lighthouse 성능 회귀 검사(결과 표는 실행 요약, 리포트는 아티팩트) |
 
 ## 성능
 
@@ -90,6 +90,7 @@ npm test            # Vitest
 npm run build       # 프로덕션 빌드
 npm run test:e2e    # Playwright E2E (프로덕션 빌드를 3100 포트에 띄워 데스크톱·모바일로 실행)
 npm run measure:js  # 빌드 후 라우트별 브라우저 JS 크기(원본·gzip) 측정
+npm run lighthouse  # 빌드 후 주요 7개 페이지 Lighthouse 측정(3회 중앙값), 기준 미달 시 실패
 ```
 
 ### 화면 폰트

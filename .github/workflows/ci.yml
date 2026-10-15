@@ -42,3 +42,27 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+  # 성능 회귀 감시. 이 PC가 아닌 GitHub 러너에서 재서 측정 환경을 일정하게 유지한다.
+  # verify와 병렬로 돌고, 결과 표는 실행 요약(Summary)에, 리포트는 아티팩트에 남긴다.
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm install
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run lighthouse
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: lighthouse-reports/
+          retention-days: 14
