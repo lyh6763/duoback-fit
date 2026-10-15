@@ -2,11 +2,42 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { expectNoHorizontalOverflow } from "./helpers";
 
-const PAGES = ["/", "/chairs", "/chairs/q1w", "/chairs/dk073w", "/fit", "/fit/method", "/compare", "/stores"];
+const PAGES = [
+  "/",
+  "/chairs",
+  "/chairs/q1w",
+  "/chairs/dk073w",
+  "/fit",
+  "/fit/method",
+  "/fit/result?share=1-s-170-60-9-w-lb-80",
+  "/compare",
+  "/stores",
+];
+
+// 저장된 프로필이 있어야 그려지는 화면은 프로필을 넣고 검사한다
+const SAVED_PROFILE = {
+  sitter: "self",
+  heightCm: 172,
+  weightKg: 68,
+  hours: "6to9",
+  purpose: "work",
+  concerns: ["lowerBack"],
+  budget: "any",
+};
+const CASES = [
+  ...PAGES.map((path) => ({ path, name: path, profile: false })),
+  { path: "/fit/result", name: "/fit/result (saved profile)", profile: true },
+];
 
 test.describe("Site", () => {
-  for (const path of PAGES) {
-    test(`${path} has no serious accessibility violations or horizontal overflow`, async ({ page }) => {
+  for (const { path, name, profile } of CASES) {
+    test(`${name} has no serious accessibility violations or horizontal overflow`, async ({ page }) => {
+      if (profile) {
+        await page.addInitScript(
+          (value) => localStorage.setItem("duoback-fit:profile", value),
+          JSON.stringify(SAVED_PROFILE),
+        );
+      }
       await page.goto(path);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       await expectNoHorizontalOverflow(page);

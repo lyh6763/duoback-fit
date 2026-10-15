@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CautionNote } from "@/components/brand/caution-note";
 import { ChairCard } from "@/components/chairs/chair-card";
 import { DataCard } from "@/components/data/data-card";
@@ -26,72 +26,112 @@ import {
   type Profile,
 } from "@/lib/fit/profile";
 import { rankChairs, recommendedSeatHeight, type ChairScore } from "@/lib/fit/score";
+import {
+  decodeShare,
+  encodeShare,
+  representativeProfile,
+  sharedSeatRange,
+  type SharedProfile,
+} from "@/lib/fit/share";
 import { draftStore, profileStore } from "@/lib/fit/store";
 import { showToast } from "@/lib/toast";
 
+export function ResultSkeleton() {
+  return (
+    <div className="page-container py-16" aria-busy="true">
+      <div className="h-96 animate-pulse rounded-lg bg-surface" />
+    </div>
+  );
+}
+
+/** `?share=`가 있으면 공유받은 결과를, 없으면 이 브라우저에 저장된 내 결과를 보여준다. */
 export function FitResult() {
+  const shareCode = useSearchParams().get("share");
+  return shareCode === null ? <OwnResult /> : <SharedResult code={shareCode} />;
+}
+
+function OwnResult() {
   const profile = profileStore.useValue();
   // 방금 지웠는지 기억해 빈 화면에서 안내 문구와 포커스를 바꾼다
   const [deleted, setDeleted] = useState(false);
 
-  if (profile === undefined) {
-    return (
-      <div className="page-container py-16" aria-busy="true">
-        <div className="h-96 animate-pulse rounded-lg bg-surface" />
-      </div>
-    );
-  }
+  if (profile === undefined) return <ResultSkeleton />;
   if (profile === null) return <NoProfile deleted={deleted} />;
 
+  return (
+    <>
+      <ProfileSummary profile={profile} onDelete={() => setDeleted(true)} />
+      <ResultBody profile={profile} />
+    </>
+  );
+}
+
+function SharedResult({ code }: { code: string }) {
+  const shared = useMemo(() => decodeShare(code), [code]);
+  const ownProfile = profileStore.useValue();
+
+  if (!shared) return <InvalidShare />;
+  // 보는 사람의 저장된 프로필은 건드리지 않는다. 대표값으로 이 화면에서만 다시 계산한다.
+  const profile = representativeProfile(shared);
+
+  return (
+    <>
+      <SharedSummary shared={shared} profile={profile} hasOwnResult={Boolean(ownProfile)} />
+      <ResultBody profile={profile} shared />
+    </>
+  );
+}
+
+function ResultBody({ profile, shared = false }: { profile: Profile; shared?: boolean }) {
   const ranked = rankChairs(profile, CHAIRS);
   const [top, ...rest] = ranked;
   const allBelow = ranked.length > 0 && ranked.every((score) => score.seat.status === "below");
 
   return (
-    <>
-      <ProfileSummary profile={profile} onDelete={() => setDeleted(true)} />
+    <div className="page-container space-y-16 py-10 md:py-14">
+      {allBelow && (
+        <CautionNote>
+          모든 모델의 좌판이 권장 높이보다 높아요. 발받침을 함께 쓰면 무릎과 발목 각도를 맞출 수 있어요.
+        </CautionNote>
+      )}
 
-      <div className="page-container space-y-16 py-10 md:py-14">
-        {allBelow && (
-          <CautionNote>
-            모든 모델의 좌판이 권장 높이보다 높아요. 발받침을 함께 쓰면 무릎과 발목 각도를 맞출 수 있어요.
-          </CautionNote>
-        )}
+      {top ? (
+        <TopMatch score={top} topSlugs={ranked.slice(0, 3).map((s) => s.chair.slug)} />
+      ) : (
+        <NoMatch shared={shared} />
+      )}
 
-        {top ? <TopMatch score={top} topSlugs={ranked.slice(0, 3).map((s) => s.chair.slug)} /> : <NoMatch />}
-
-        {top && (
-          <section aria-labelledby="breakdown-title" className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-start">
-            <div className="space-y-2">
-              <h2 id="breakdown-title" className="text-xl font-bold">
-                왜 {top.total}점일까요?
-              </h2>
-              <p className="text-sm leading-relaxed text-muted">
-                체형, 사용 패턴, 불편 부위, 예산을 나눠 점수를 매겼어요. 하중을 넘는 모델은 처음부터 제외했어요.
-              </p>
-            </div>
-            <ScoreBreakdown score={top} />
-          </section>
-        )}
-
-        {rest.length > 0 && (
-          <section aria-labelledby="alternatives-title" className="space-y-8">
-            <h2 id="alternatives-title" className="text-xl font-bold">
-              이런 선택지도 있어요
+      {top && (
+        <section aria-labelledby="breakdown-title" className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-start">
+          <div className="space-y-2">
+            <h2 id="breakdown-title" className="text-xl font-bold">
+              왜 {top.total}점일까요?
             </h2>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-6">
-              {rest.slice(0, 4).map((score) => (
-                <ChairCard key={score.chair.slug} chair={score.chair} score={score.total} />
-              ))}
-            </div>
-          </section>
-        )}
+            <p className="text-sm leading-relaxed text-muted">
+              체형, 사용 패턴, 불편 부위, 예산을 나눠 점수를 매겼어요. 하중을 넘는 모델은 처음부터 제외했어요.
+            </p>
+          </div>
+          <ScoreBreakdown score={top} />
+        </section>
+      )}
 
-        <p className="border-t border-line pt-6 text-sm text-muted">
-          적합도는 단순화한 계산식으로 구한 참고값이에요. 실제 착좌감은 매장에서 직접 앉아보고 확인해 주세요.
-        </p>
-      </div>
-    </>
+      {rest.length > 0 && (
+        <section aria-labelledby="alternatives-title" className="space-y-8">
+          <h2 id="alternatives-title" className="text-xl font-bold">
+            이런 선택지도 있어요
+          </h2>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4 lg:gap-x-6">
+            {rest.slice(0, 4).map((score) => (
+              <ChairCard key={score.chair.slug} chair={score.chair} score={score.total} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <p className="border-t border-line pt-6 text-sm text-muted">
+        적합도는 단순화한 계산식으로 구한 참고값이에요. 실제 착좌감은 매장에서 직접 앉아보고 확인해 주세요.
+      </p>
+    </div>
   );
 }
 
@@ -113,6 +153,26 @@ function ProfileSummary({ profile, onDelete }: { profile: Profile; onDelete: () 
   function restart() {
     draftStore.set({});
     router.push("/fit?step=1");
+  }
+
+  /** 구간 코드만 담은 링크를 공유한다. 휴대폰은 시스템 공유 창, 그 밖에는 클립보드 복사. */
+  async function share() {
+    const url = new URL(`/fit/result?share=${encodeShare(profile)}`, window.location.origin).toString();
+    if (window.matchMedia("(pointer: coarse)").matches && navigator.share) {
+      try {
+        await navigator.share({ title: "DUOBACK Fit 결과", url });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        // 공유 창을 열 수 없으면 복사로 넘어간다
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast("결과 링크를 복사했어요");
+    } catch {
+      showToast("복사하지 못했어요", { label: "링크 열기", href: url });
+    }
   }
 
   /** 이 브라우저에 저장한 키·체중과 답변을 지운다. 실수로 눌렀을 때를 위해 되돌리기를 남긴다. */
@@ -156,16 +216,101 @@ function ProfileSummary({ profile, onDelete }: { profile: Profile; onDelete: () 
             ))}
           </ul>
         </div>
-        <div className="flex gap-4 text-sm font-semibold">
-          <Link href="/fit/method" className="text-primary hover:underline">
-            계산 방식 보기
-          </Link>
-          <button type="button" onClick={restart} className="text-primary hover:underline">
-            다시 하기
-          </button>
-          <button type="button" onClick={deleteProfile} className="text-muted-strong hover:underline">
-            내 정보 지우기
-          </button>
+        <div className="space-y-2 md:text-right">
+          <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold md:justify-end">
+            <button type="button" onClick={share} className="text-primary hover:underline">
+              결과 공유
+            </button>
+            <Link href="/fit/method" className="text-primary hover:underline">
+              계산 방식 보기
+            </Link>
+            <button type="button" onClick={restart} className="text-primary hover:underline">
+              다시 하기
+            </button>
+            <button type="button" onClick={deleteProfile} className="text-muted-strong hover:underline">
+              내 정보 지우기
+            </button>
+          </div>
+          <p className="text-xs text-muted-strong">공유 링크에는 키·체중이 5cm·10kg 구간으로만 담겨요.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const range = (min: number, max: number, unit: string) => (min === max ? `${min}${unit}` : `${min}~${max}${unit}`);
+
+function SharedSummary({
+  shared,
+  profile,
+  hasOwnResult,
+}: {
+  shared: SharedProfile;
+  profile: Profile;
+  hasOwnResult: boolean;
+}) {
+  const router = useRouter();
+  // 정확한 좌판 높이를 보이면 키가 역산되므로 구간으로만 보여준다
+  const seat = sharedSeatRange(shared);
+  const chips = [
+    SITTER_LABEL[shared.sitter],
+    `${range(shared.height.min, shared.height.max, "cm")} · ${range(shared.weight.min, shared.weight.max, "kg")}`,
+    HOURS_LABEL[shared.hours],
+    PURPOSE_LABEL[shared.purpose],
+    shared.concerns.length ? shared.concerns.map((c) => CONCERN_LABEL[c]).join(", ") : "불편한 곳 없음",
+    `예산 ${BUDGET_LABEL[shared.budget]}`,
+  ];
+
+  // 다른 기기에서 내 결과를 이어 보는 경우. 대표값이 저장되니 결과 화면의 칩에서 고칠 수 있게 안내한다.
+  function save() {
+    const previous = profileStore.get();
+    profileStore.set(profile);
+    router.push("/fit/result");
+    if (previous) {
+      showToast("내 결과를 공유받은 결과로 바꿨어요", { label: "되돌리기", onClick: () => profileStore.set(previous) });
+    } else {
+      showToast("내 결과로 저장했어요");
+    }
+  }
+
+  return (
+    <section className="bg-surface">
+      <div className="page-container grid gap-6 py-10 md:grid-cols-[1fr_auto] md:items-end md:py-14">
+        <div className="space-y-4">
+          <h1 className="text-xs font-semibold tracking-label text-muted-strong">공유받은 결과 · 권장 좌판 높이</h1>
+          <p className="font-display text-5xl leading-none tabular-nums md:text-[64px]">
+            {range(seat.min, seat.max, "")}
+            <span className="ml-2 text-2xl">mm</span>
+          </p>
+          <ul aria-label="공유된 정보" className="flex flex-wrap gap-2">
+            {chips.map((chip) => (
+              <li key={chip} className="rounded-full border border-line bg-elevated px-3 py-1.5 text-sm">
+                {chip}
+              </li>
+            ))}
+          </ul>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-strong">
+            키와 체중은 구간으로만 공유돼서, 구간 대표값(키 {profile.heightCm}cm, 체중 {profile.weightKg}kg)으로 다시
+            계산했어요. 보낸 사람의 결과와 조금 다를 수 있어요.
+          </p>
+        </div>
+        <div className="space-y-3 md:text-right">
+          <div className="flex flex-wrap gap-3 md:justify-end">
+            <Link href="/fit" className={buttonClass()}>
+              내 몸으로 찾기
+            </Link>
+            <button type="button" onClick={save} className={buttonClass({ variant: "secondary" })}>
+              내 결과로 저장
+            </button>
+          </div>
+          <p className="text-xs text-muted-strong">
+            {hasOwnResult ? "저장하면 지금 저장된 내 결과를 바꿔요. " : ""}저장한 키·체중은 결과 화면에서 고칠 수 있어요.
+          </p>
+          {hasOwnResult && (
+            <Link href="/fit/result" className="inline-block text-sm font-semibold text-primary hover:underline">
+              내 결과 보기 →
+            </Link>
+          )}
         </div>
       </div>
     </section>
@@ -261,15 +406,35 @@ function TopMatch({ score, topSlugs }: { score: ChairScore; topSlugs: string[] }
   );
 }
 
-function NoMatch() {
+function NoMatch({ shared }: { shared: boolean }) {
   return (
     <section className="space-y-4 rounded-lg bg-elevated p-8 text-center">
       <h2 className="text-xl font-bold">입력한 체중을 견디는 모델이 없어요</h2>
       <p className="text-muted">라인업의 최대 하중은 130kg이에요. 체중을 다시 확인하거나 매장에서 상담받아 보세요.</p>
-      <Link href="/fit?step=2" className={buttonClass({ variant: "secondary" })}>
-        키와 체중 수정하기
-      </Link>
+      {shared ? (
+        <Link href="/fit" className={buttonClass({ variant: "secondary" })}>
+          내 몸으로 찾기
+        </Link>
+      ) : (
+        <Link href="/fit?step=2" className={buttonClass({ variant: "secondary" })}>
+          키와 체중 수정하기
+        </Link>
+      )}
     </section>
+  );
+}
+
+function InvalidShare() {
+  return (
+    <div className="page-container">
+      <div className="mx-auto max-w-xl space-y-6 py-24 text-center">
+        <h1 className="text-2xl font-bold">공유 링크가 올바르지 않아요</h1>
+        <p className="text-muted">링크가 잘렸거나 바뀐 것 같아요. 보낸 사람에게 다시 받거나 직접 찾아보세요.</p>
+        <Link href="/fit" className={buttonClass({ size: "l" })}>
+          내 의자 찾기
+        </Link>
+      </div>
+    </div>
   );
 }
 

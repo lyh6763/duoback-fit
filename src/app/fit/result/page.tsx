@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { FitResult } from "@/components/fit/fit-result";
+import { Suspense } from "react";
+import { FitResult, ResultSkeleton } from "@/components/fit/fit-result";
 
 export const metadata: Metadata = {
   title: "내 의자 찾기 결과",
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function FitResultPage() {
-  return <FitResult />;
+  // 공유 코드(?share=)를 읽는 클라이언트 영역이라 Suspense로 감싼다
+  return (
+    <Suspense fallback={<ResultSkeleton />}>
+      <FitResult />
+    </Suspense>
+  );
 }
