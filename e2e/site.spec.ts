@@ -92,10 +92,12 @@ test.describe("Site", () => {
     }
     for (const img of cardImages.slice(3)) expect(img).toContain('loading="lazy"');
 
-    // LCP가 하나로 정해진 대표 이미지는 <head>에서 preload한다
+    // LCP가 하나로 정해진 대표 이미지는 <head>에서 높은 우선순위로 preload한다
     for (const path of ["/", "/chairs/q1w"]) {
       const html = await (await request.get(path)).text();
-      expect(html, path).toMatch(/<link rel="preload" [^>]*as="image"/);
+      const preload = html.match(/<link rel="preload" [^>]*as="image"[^>]*>/)?.[0];
+      expect(preload, path).toBeDefined();
+      expect(preload, path).toContain('fetchPriority="high"');
     }
   });
 

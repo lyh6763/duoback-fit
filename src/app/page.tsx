@@ -49,6 +49,7 @@ export default function HomePage() {
 
         <div className="relative">
           <div className="overflow-hidden rounded-xl bg-photo">
+            {/* Next 16의 preload는 우선순위를 붙이지 않는다. fetchPriority를 주면 <link rel=preload>와 <img> 양쪽에 붙는다. */}
             <Image
               src={chairImage(HERO_CHAIR, HERO_CHAIR.colors[0].slug)}
               alt={`${HERO_CHAIR.name} 의자`}
@@ -56,6 +57,7 @@ export default function HomePage() {
               height={1254}
               sizes="(min-width: 1024px) 50vw, 100vw"
               preload
+              fetchPriority="high"
               className="aspect-[4/3] w-full object-contain"
             />
           </div>
