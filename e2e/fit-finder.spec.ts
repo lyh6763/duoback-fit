@@ -22,6 +22,35 @@ test.describe("Fit Finder", () => {
     await expect(top).toBeVisible();
   });
 
+  test("deletes the saved profile and lets the visitor undo it", async ({ page }) => {
+    await completeFitFinder(page);
+    const stored = () =>
+      page.evaluate(() => ({
+        profile: localStorage.getItem("duoback-fit:profile"),
+        draft: sessionStorage.getItem("duoback-fit:draft"),
+      }));
+    const before = await stored();
+    expect(before.profile).not.toBeNull();
+
+    await page.getByRole("button", { name: "내 정보 지우기" }).click();
+
+    // 저장소에서 지워지고, 빈 화면의 제목으로 포커스가 옮겨진다
+    await expect(page.getByRole("heading", { level: 1, name: "아직 결과가 없어요" })).toBeFocused();
+    await expect(page.locator("main")).toContainText("저장된 키·체중과 답변을 모두 지웠어요");
+    expect(await stored()).toEqual({ profile: null, draft: null });
+
+    // 실수로 눌렀다면 토스트에서 되돌린다
+    await expect(page.getByRole("status")).toContainText("저장된 내 정보를 지웠어요");
+    await page.getByRole("button", { name: "되돌리기" }).click();
+    await expect(page.getByRole("heading", { level: 1, name: "당신의 권장 좌판 높이" })).toBeVisible();
+    expect(await stored()).toEqual(before);
+
+    // 지운 뒤 새로고침해도 결과가 돌아오지 않는다
+    await page.getByRole("button", { name: "내 정보 지우기" }).click();
+    await page.reload();
+    await expect(page.getByRole("heading", { level: 1, name: "아직 결과가 없어요" })).toBeVisible();
+  });
+
   test("moves focus to each question for screen readers", async ({ page }) => {
     await page.goto("/fit");
     await page.getByRole("button", { name: "시작하기" }).click();

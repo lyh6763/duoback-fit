@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { CautionNote } from "@/components/brand/caution-note";
 import { ChairCard } from "@/components/chairs/chair-card";
 import { DataCard } from "@/components/data/data-card";
@@ -30,6 +31,8 @@ import { showToast } from "@/lib/toast";
 
 export function FitResult() {
   const profile = profileStore.useValue();
+  // 방금 지웠는지 기억해 빈 화면에서 안내 문구와 포커스를 바꾼다
+  const [deleted, setDeleted] = useState(false);
 
   if (profile === undefined) {
     return (
@@ -38,7 +41,7 @@ export function FitResult() {
       </div>
     );
   }
-  if (profile === null) return <NoProfile />;
+  if (profile === null) return <NoProfile deleted={deleted} />;
 
   const ranked = rankChairs(profile, CHAIRS);
   const [top, ...rest] = ranked;
@@ -46,7 +49,7 @@ export function FitResult() {
 
   return (
     <>
-      <ProfileSummary profile={profile} />
+      <ProfileSummary profile={profile} onDelete={() => setDeleted(true)} />
 
       <div className="page-container space-y-16 py-10 md:py-14">
         {allBelow && (
@@ -92,7 +95,7 @@ export function FitResult() {
   );
 }
 
-function ProfileSummary({ profile }: { profile: Profile }) {
+function ProfileSummary({ profile, onDelete }: { profile: Profile; onDelete: () => void }) {
   const router = useRouter();
   const seat = recommendedSeatHeight(profile.heightCm);
   const chips = [
@@ -110,6 +113,21 @@ function ProfileSummary({ profile }: { profile: Profile }) {
   function restart() {
     draftStore.set({});
     router.push("/fit?step=1");
+  }
+
+  /** 이 브라우저에 저장한 키·체중과 답변을 지운다. 실수로 눌렀을 때를 위해 되돌리기를 남긴다. */
+  function deleteProfile() {
+    const previous = { profile, draft: draftStore.get() };
+    onDelete();
+    profileStore.set(null);
+    draftStore.set(null);
+    showToast("저장된 내 정보를 지웠어요", {
+      label: "되돌리기",
+      onClick: () => {
+        profileStore.set(previous.profile);
+        draftStore.set(previous.draft);
+      },
+    });
   }
 
   return (
@@ -144,6 +162,9 @@ function ProfileSummary({ profile }: { profile: Profile }) {
           </Link>
           <button type="button" onClick={restart} className="text-primary hover:underline">
             다시 하기
+          </button>
+          <button type="button" onClick={deleteProfile} className="text-muted-strong hover:underline">
+            내 정보 지우기
           </button>
         </div>
       </div>
@@ -252,12 +273,25 @@ function NoMatch() {
   );
 }
 
-function NoProfile() {
+function NoProfile({ deleted }: { deleted: boolean }) {
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  // 지우기 버튼이 사라지면 포커스가 갈 곳을 잃으므로 새 화면의 제목으로 옮긴다
+  useEffect(() => {
+    if (deleted) headingRef.current?.focus();
+  }, [deleted]);
+
   return (
     <div className="page-container">
       <div className="mx-auto max-w-xl space-y-6 py-24 text-center">
-        <h1 className="text-2xl font-bold">아직 결과가 없어요</h1>
-        <p className="text-muted">질문 6개에 답하면 내 몸에 맞는 의자를 찾아드려요.</p>
+        <h1 ref={headingRef} tabIndex={-1} className="text-2xl font-bold outline-none">
+          아직 결과가 없어요
+        </h1>
+        <p className="text-muted">
+          {deleted
+            ? "이 브라우저에 저장된 키·체중과 답변을 모두 지웠어요. 질문 6개에 다시 답하면 의자를 찾아드려요."
+            : "질문 6개에 답하면 내 몸에 맞는 의자를 찾아드려요."}
+        </p>
         <Link href="/fit" className={buttonClass({ size: "l" })}>
           내 의자 찾기
         </Link>
