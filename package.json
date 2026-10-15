@@ -12,6 +12,7 @@
     "fonts:og": "node scripts/subset-og-fonts.mjs",
     "fonts:web": "node scripts/web-font.mjs",
     "test:e2e": "playwright test",
+    "lighthouse": "node scripts/lighthouse.mjs",
     "measure:js": "node scripts/measure-js.mjs"
   },
   "dependencies": {
