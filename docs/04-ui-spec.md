@@ -1,6 +1,6 @@
 # UI 스펙 — DUOBACK Fit (가칭)
 
-> v0.2 · 2026-10-01 · 콘셉트 확정: **Soft Ergonomics(기본) + Posture Clinic(데이터 표현)**
+> v0.2 · 2026-10-01 · 콘셉트 확정: **Soft Ergonomics(기본) + Posture Clinic(데이터 표현)** · v0.3 · 2026-10-15 구현 반영(대비 규칙, 토스트 되돌리기)
 > Figma Variables와 Tailwind v4 `@theme` 토큰이 1:1로 대응하도록 이름을 맞춘다.
 
 ---
@@ -114,6 +114,7 @@
 | ink-900 on paper-100 / white | 14.5 / 16.3 | ✅ |
 | stone-500 on paper-100 / white | 5.1 / 5.8 | ✅ 본문 가능 |
 | stone-600 on sand-200 | 5.6 | ✅ sand 배경의 보조 텍스트 (v0.1의 ⚠️ 해결) |
+| stone-500 on sand-200 | 4.37 | ❌ 텍스트 불가. sand 배경의 보조 텍스트는 반드시 `muted-strong`(stone-600)을 쓴다 *(v0.3: 결과 화면 안내문에서 axe가 잡아낸 위반)* |
 | moss-600 on white / paper-100 | 7.5 / 6.7 | ✅ |
 | paper-50 on moss-600 (버튼, High 배지) | 7.1 | ✅ |
 | moss-700 on moss-50 (Mid 배지, 선택 상태) | 8.4 | ✅ |
@@ -357,7 +358,7 @@
 - **활성 메뉴:** `aria-current="page"` + 밑줄 2px
 
 #### Toast · Dialog · BottomSheet
-- **Toast:** `role="status"`, 4초 후 닫힘, 액션 링크 1개 허용
+- **Toast:** `role="status"`, 4초 후 닫힘, 액션 링크 1개 허용. *(v0.3)* 되돌릴 수 있는 삭제·교체(비교에서 빼기, 비교 목록 비우기, 내 정보 지우기, 공유받은 결과로 바꾸기)는 확인 대화상자 대신 바로 실행하고 "되돌리기" 액션을 단다
 - **Dialog / BottomSheet:** 포커스 트랩, 열 때 첫 요소 포커스, 닫을 때 트리거로 포커스 복귀, Esc·배경 클릭으로 닫기
 
 #### EmptyState

@@ -3,6 +3,7 @@
  * docs/screenshots/*.webp로 저장한다.
  *
  *   npm run build && npm run screenshots
+ *   SHOT=fit-result-shared npm run screenshots   (한 장만 다시 찍기)
  */
 import { spawn } from "node:child_process";
 import { mkdirSync, statSync } from "node:fs";
@@ -40,6 +41,8 @@ const SHOTS = [
   { name: "fit-result-mobile", device: MOBILE, path: "/fit/result", profile: true, scrollTo: "#top-title" },
   { name: "chair-detail", device: DESKTOP, path: "/chairs/q1w", profile: true },
   { name: "compare", device: DESKTOP, path: "/compare?m=q1w,d3hs,d2500g", profile: true },
+  // 공유받은 결과: 같은 프로필의 구간 코드(키 170~174, 체중 60~69)를 프로필 없는 브라우저로 연다
+  { name: "fit-result-shared", device: DESKTOP, path: "/fit/result?share=1-s-170-60-6-w-lb-any" },
 ];
 
 async function waitForServer() {
@@ -59,7 +62,7 @@ const server = spawn(process.execPath, [require.resolve("next/dist/bin/next"), "
 const browser = await chromium.launch();
 try {
   await waitForServer();
-  for (const shot of SHOTS) {
+  for (const shot of SHOTS.filter((s) => !process.env.SHOT || s.name === process.env.SHOT)) {
     const context = await browser.newContext({ ...shot.device, reducedMotion: "reduce" });
     await context.addInitScript(
       ({ profile, draft }) => {
