@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { buttonClass } from "@/components/ui/button";
 import { CHAIRS } from "@/data/chairs";
-import { CATEGORY_LABEL } from "@/lib/chairs/format";
+import { CATEGORY_LABEL, fitsBody } from "@/lib/chairs/format";
 import { CATEGORIES, type Chair } from "@/lib/chairs/types";
 import { scoreChair } from "@/lib/fit/score";
 import { profileStore } from "@/lib/fit/store";
@@ -33,6 +33,8 @@ export function ChairBrowser() {
   const categoryParam = params.get("category");
   const category = CATEGORIES.find((c) => c === categoryParam) ?? null;
   const headrestOnly = params.get("headrest") === "1";
+  // 프로필이 있을 때만 쓴다. 프로필 없이 ?fits=1 링크로 들어오면 필터를 무시한다.
+  const fitsOnly = Boolean(profile) && params.get("fits") === "1";
   const sortParam = params.get("sort");
   const sort: SortKey = isSortKey(sortParam) ? sortParam : "recommended";
 
@@ -48,7 +50,10 @@ export function ChairBrowser() {
 
   const chairs = useMemo(() => {
     const filtered = CHAIRS.filter(
-      (chair) => (category === null || chair.category === category) && (!headrestOnly || chair.spec.headrest),
+      (chair) =>
+        (category === null || chair.category === category) &&
+        (!headrestOnly || chair.spec.headrest) &&
+        (!fitsOnly || (profile && fitsBody(chair.spec, profile))),
     );
     const byScore = (a: Chair, b: Chair) => (scores.get(b.slug) ?? -1) - (scores.get(a.slug) ?? -1);
     const compare: Record<SortKey, (a: Chair, b: Chair) => number> = {
@@ -58,7 +63,7 @@ export function ChairBrowser() {
       newest: (a, b) => b.releaseDate.localeCompare(a.releaseDate),
     };
     return [...filtered].sort(compare[sort]);
-  }, [category, headrestOnly, sort, scores, profile]);
+  }, [category, headrestOnly, fitsOnly, sort, scores, profile]);
 
   function update(patch: Record<string, string | null>) {
     const next = new URLSearchParams(params);
@@ -114,6 +119,16 @@ export function ChairBrowser() {
           >
             헤드레스트 있음
           </button>
+          {profile && (
+            <button
+              type="button"
+              aria-pressed={fitsOnly}
+              onClick={() => update({ fits: fitsOnly ? null : "1" })}
+              className={chipClass(fitsOnly)}
+            >
+              내 몸에 맞는 의자만
+            </button>
+          )}
         </div>
 
         <label className="flex items-center gap-2 text-sm">
@@ -134,12 +149,18 @@ export function ChairBrowser() {
 
       <p className="text-sm text-muted" aria-live="polite">
         <span className="font-semibold text-ink tabular-nums">{chairs.length}</span>개 모델
+        {fitsOnly && profile && (
+          <>
+            {" "}· 키 <span className="tabular-nums">{profile.heightCm}cm</span>, 체중{" "}
+            <span className="tabular-nums">{profile.weightKg}kg</span> 기준
+          </>
+        )}
       </p>
 
       {chairs.length === 0 ? (
         <div className="space-y-4 rounded-lg bg-elevated p-10 text-center">
           <p className="text-lg font-semibold">조건에 맞는 의자가 없어요</p>
-          <button type="button" onClick={() => update({ category: null, headrest: null })} className={buttonClass({ variant: "secondary" })}>
+          <button type="button" onClick={() => update({ category: null, headrest: null, fits: null })} className={buttonClass({ variant: "secondary" })}>
             필터 초기화
           </button>
         </div>

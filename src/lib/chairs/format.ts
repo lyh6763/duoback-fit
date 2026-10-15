@@ -67,6 +67,15 @@ export function recommendedHeightRange(spec: ChairSpec) {
   };
 }
 
+/**
+ * "내 몸에 맞는 의자만" 필터의 기준. 카드·상세에 보이는 "키 a~bcm에 적합" 범위와 똑같이 판정해야
+ * 화면에 맞는다고 적힌 의자가 필터에서 빠지는 일이 없다. 하중을 넘는 의자는 추천처럼 제외한다.
+ */
+export function fitsBody(spec: ChairSpec, body: { heightCm: number; weightKg: number }) {
+  const heights = recommendedHeightRange(spec);
+  return body.heightCm >= heights.min && body.heightCm <= heights.max && body.weightKg <= spec.maxWeightKg;
+}
+
 /** 최대 하중의 85% — 여유 있게 쓸 수 있는 체중 */
 export function comfortableWeight(spec: ChairSpec) {
   return Math.floor(spec.maxWeightKg * 0.85);
