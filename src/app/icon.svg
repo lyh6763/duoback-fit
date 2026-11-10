@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- 두 개의 등판(듀오백)·좌판·기둥으로 그린 의자. 색은 globals.css 토큰과 같은 값: primary · canvas · marker -->
+  <rect width="32" height="32" rx="7" fill="#2F5D50"/>
+  <rect x="8.5" y="4.5" width="6" height="13" rx="3" fill="#F6F1EA"/>
+  <rect x="17.5" y="4.5" width="6" height="13" rx="3" fill="#F6F1EA"/>
+  <rect x="14.5" y="21" width="3" height="7.5" rx="1" fill="#F6F1EA"/>
+  <rect x="6.5" y="18.5" width="19" height="4" rx="2" fill="#D9774B"/>
+</svg>
