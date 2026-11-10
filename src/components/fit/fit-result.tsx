@@ -195,7 +195,7 @@ function ProfileSummary({ profile, onDelete }: { profile: Profile; onDelete: () 
       <div className="page-container grid gap-6 py-10 md:grid-cols-[1fr_auto] md:items-end md:py-14">
         <div className="space-y-4">
           <h1 className="text-xs font-semibold tracking-label text-muted-strong">당신의 권장 좌판 높이</h1>
-          <p className="font-display text-5xl leading-none md:text-[64px]">
+          <p className="font-display text-5xl leading-none">
             {seat}
             <span className="ml-2 text-2xl">mm</span>
           </p>
@@ -278,7 +278,7 @@ function SharedSummary({
       <div className="page-container grid gap-6 py-10 md:grid-cols-[1fr_auto] md:items-end md:py-14">
         <div className="space-y-4">
           <h1 className="text-xs font-semibold tracking-label text-muted-strong">공유받은 결과 · 권장 좌판 높이</h1>
-          <p className="font-display text-5xl leading-none tabular-nums md:text-[64px]">
+          <p className="font-display text-5xl leading-none tabular-nums">
             {range(seat.min, seat.max, "")}
             <span className="ml-2 text-2xl">mm</span>
           </p>
