@@ -32,6 +32,8 @@ import { RangeSlider } from "./range-slider";
 const TOTAL_STEPS = 6;
 const STEP_NAMES = ["누가 앉나요", "키와 체중", "앉는 시간", "주 용도", "불편한 곳", "예산"];
 const COMPLETE = TOTAL_STEPS + 1;
+/** 화면에는 질문이 하나씩만 나오므로 고정 id로 질문 제목과 선택지 묶음(role="group")을 잇는다 */
+const QUESTION_TITLE_ID = "fit-question-title";
 
 /** 아직 답하지 않은 첫 질문 번호. 모두 답했으면 COMPLETE. */
 function firstUnanswered(draft: Draft) {
@@ -224,7 +226,12 @@ function FitStepFrame({ step, children }: { step: number; children: ReactNode })
 
         <div className="space-y-2">
           <p className="text-xs font-semibold tracking-label text-primary">{STEP_NAMES[step - 1]}</p>
-          <h1 ref={headingRef} tabIndex={-1} className="text-2xl font-bold tracking-tight outline-none md:text-3xl">
+          <h1
+            id={QUESTION_TITLE_ID}
+            ref={headingRef}
+            tabIndex={-1}
+            className="text-2xl font-bold tracking-tight outline-none md:text-3xl"
+          >
             {question.title}
           </h1>
           {question.hint && <p className="text-sm text-muted">{question.hint}</p>}
@@ -246,7 +253,7 @@ function SingleChoice<T extends string>({
   onSelect: (value: T) => void;
 }) {
   return (
-    <div role="group" className="space-y-3">
+    <div role="group" aria-labelledby={QUESTION_TITLE_ID} className="space-y-3">
       {options.map((option) => (
         <OptionCard
           key={option.value}
@@ -320,7 +327,12 @@ function ConcernStep({ initial, onNext }: { initial: Concern[] | undefined; onNe
 
   return (
     <div className="space-y-6">
-      <div role="group" aria-describedby={error ? "concern-error" : undefined} className="grid gap-3 sm:grid-cols-2">
+      <div
+        role="group"
+        aria-labelledby={QUESTION_TITLE_ID}
+        aria-describedby={error ? "concern-error" : undefined}
+        className="grid gap-3 sm:grid-cols-2"
+      >
         {CONCERNS.map((concern) => (
           <OptionCard
             key={concern}
