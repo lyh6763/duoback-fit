@@ -342,6 +342,7 @@
 #### FilterPanel · FilterChip
 - **FilterChip States:** Default / Hover / Selected / Disabled
 - **FilterPanel:** Desktop은 sticky 좌측 패널, Mobile은 바텀시트(적용 / 초기화 고정)
+- *(v0.2: 좌측 패널·바텀시트 대신 `chair-browser.tsx`의 목록 상단 칩 툴바로 구현했다. 용도는 칩 버튼, 가격대·정렬은 네이티브 Select, 추가 조건은 토글로 제공하고 폭에 따라 줄바꿈한다.)*
 
 #### CompareTray
 - **States:** Hidden(0개) / Partial(1개: "하나 더 담아주세요") / Ready(2\~3개) / Full(3개, 추가 시 흔들림 320ms)

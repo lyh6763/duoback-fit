@@ -114,7 +114,7 @@
 | 데이터 | 타입이 지정된 정적 데이터 (`src/data/chairs.ts`). zod 스키마는 테스트에서만 데이터를 검증하고, 브라우저 저장소 값은 손으로 쓴 파서가 검증(시드 고정 대조 테스트로 zod와 같은 판정을 보장). ESLint가 앱 코드의 zod import를 막음 |
 | 상태 | `useSyncExternalStore` 기반 Web Storage 스토어 (프로필: localStorage, 진행 중 답변: sessionStorage) |
 | 테스트 | Vitest — 매칭 로직과 데이터 정합성 · Playwright — 주요 사용 흐름, axe 접근성 검사(WCAG 2.1 AA), SEO 메타데이터 |
-| SEO | 페이지별 메타데이터, canonical, JSON-LD `Product`, sitemap, robots |
+| SEO | 페이지별 메타데이터, 색인 페이지마다 canonical·og:url, JSON-LD `Product`, sitemap, robots |
 | OG 이미지 | `next/og`로 사이트·상품별 1200×630 이미지를 빌드 시 정적 생성. 상품 이미지에 권장 키·좌판 높이 게이지 표시 |
 | CI | GitHub Actions: lint → typecheck → test → build → 폰트 글자 검사 → E2E (실패 시 Playwright 리포트를 아티팩트로 업로드). 병렬 작업으로 Lighthouse 성능 회귀 검사(결과 표는 실행 요약, 리포트는 아티팩트) |
 
@@ -144,16 +144,26 @@
 
 ```text
 src/
-  app/                 라우트 (/, /chairs, /chairs/[slug], /fit, /fit/result, /fit/method)
+  app/                 라우트 (/, /chairs, /chairs/[slug], /fit, /fit/result, /fit/method, /compare, /stores)
   components/
     brand/             브랜드 레이어 (BodySilhouette, CautionNote)
     data/              데이터 레이어 (DataCard, FitGauge, ScoreBadge, ReasonList, ScoreBreakdown)
-    chairs/  fit/  site/  ui/
+    chairs/  fit/  compare/  stores/  site/  ui/
   data/chairs.ts       의자 데이터 (+ 정합성 테스트)
+  data/stores.ts       전시 매장 데이터 (+ 정합성 테스트)
   lib/
     chairs/            스키마, 라벨, 파생 값
-    fit/               프로필 스키마, 적합도 계산(score.ts + 테스트), 스토어
+    fit/               프로필 스키마, 적합도 계산(score.ts + 테스트), 스토어, 공유 코드(share.ts)
+    compare/           비교 목록, 행 정의, 스토어
+    og/                공유 이미지 공통 렌더링, 글자 검사
+    storage.ts         Web Storage 읽기·검증·구독
+    toast.ts           되돌리기를 지원하는 토스트 스토어
+    site-url.ts        사이트 기준 주소
+    metadata.ts        페이지별 canonical·Open Graph 공통 설정
 docs/                  기획 문서 (PRD, UX 플로우, 와이어프레임, UI 스펙)
+e2e/                   Playwright 사용 흐름·접근성·메타 검사
+scripts/               폰트 서브셋·Lighthouse·스크린샷·JS 크기 측정
+assets/fonts/          OG 이미지용 Pretendard OTF 서브셋
 ```
 
 ## 실행
@@ -164,7 +174,7 @@ npm run dev
 ```
 
 ```bash
-npm run lint        # ESLint
+npm run lint        # ESLint, 경고도 실패로 처리(--max-warnings 0)
 npm run typecheck   # 라우트 타입 생성 + tsc
 npm test            # Vitest
 npm run build       # 프로덕션 빌드
@@ -191,4 +201,4 @@ OG 렌더러(Satori)는 woff2를 읽지 못해 otf가 필요한데, Pretendard �
 `npm run fonts:og`가 KS X 1001 한글 2,350자 + ASCII만 남긴 서브셋(굵기당 약 350KB)을 `assets/fonts/`에 만듭니다.
 서브셋에 없는 글자는 빈 칸으로 그려지므로, OG에 들어가는 문자열은 `src/lib/og/charset.test.ts`가 검사합니다.
 
-사이트 주소는 `NEXT_PUBLIC_SITE_URL` → Vercel이 자동 제공하는 `VERCEL_PROJECT_PRODUCTION_URL` → `localhost` 순으로 정해집니다. 커스텀 도메인을 쓸 때만 `NEXT_PUBLIC_SITE_URL`을 설정하면 됩니다.
+사이트 주소는 `NEXT_PUBLIC_SITE_URL` → Vercel이 자동 제공하는 `VERCEL_PROJECT_PRODUCTION_URL` → `localhost` 순으로 정해집니다. 커스텀 도메인을 쓸 때만 `NEXT_PUBLIC_SITE_URL`을 설정하면 됩니다. 설정 예시와 설명은 `.env.example`에 있으며, 로컬에서 필요하면 `.env.local`로 복사해 사용합니다.
