@@ -6,6 +6,10 @@ import { buttonClass } from "@/components/ui/button";
 import { CHAIRS } from "@/data/chairs";
 import { STORES } from "@/data/stores";
 import { chairImage } from "@/lib/chairs/format";
+import { pageMetadata } from "@/lib/metadata";
+
+// 제목·설명은 layout의 기본값을 쓰고 canonical·og:title·og:url만 더한다. 공유 이미지는 같은 폴더의 opengraph-image.tsx
+export const metadata = pageMetadata({ path: "/", ownOgImage: true });
 
 const STEPS = [
   { title: "몸 정보", body: "키와 체중으로 내게 맞는 좌판 높이를 계산해요." },

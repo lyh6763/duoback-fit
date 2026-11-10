@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CompareView } from "@/components/compare/compare-view";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "비교",
   description: "최대 3개 모델의 체형 적합, 조절 기능, 소재, 크기를 나란히 비교해 보세요.",
+  path: "/compare",
   // 담은 모델에 따라 내용이 달라지는 페이지라 검색에 노출하지 않는다
-  robots: { index: false },
-};
+  index: false,
+});
 
 export default function ComparePage() {
   return (

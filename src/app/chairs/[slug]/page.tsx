@@ -6,6 +6,7 @@ import { ChairOverview } from "@/components/chairs/chair-overview";
 import { SpecTable } from "@/components/chairs/spec-table";
 import { CHAIRS, getChair } from "@/data/chairs";
 import { CATEGORY_LABEL, chairImage } from "@/lib/chairs/format";
+import { pageMetadata } from "@/lib/metadata";
 
 // 데이터에 없는 slug는 빌드 시 만들지 않고 404로 보낸다
 export const dynamicParams = false;
@@ -19,12 +20,7 @@ export async function generateMetadata(props: PageProps<"/chairs/[slug]">): Prom
   const chair = getChair(slug);
   if (!chair) return {};
   // og:image는 같은 폴더의 opengraph-image.tsx가 자동으로 채운다
-  return {
-    title: chair.name,
-    description: chair.summary,
-    alternates: { canonical: `/chairs/${chair.slug}` },
-    openGraph: { title: chair.name, description: chair.summary },
-  };
+  return pageMetadata({ title: chair.name, description: chair.summary, path: `/chairs/${chair.slug}`, ownOgImage: true });
 }
 
 export default async function ChairPage(props: PageProps<"/chairs/[slug]">) {

@@ -2,9 +2,11 @@ import { ImageResponse } from "next/og";
 import { getChair } from "@/data/chairs";
 import { chairImage } from "@/lib/chairs/format";
 import { recommendedSeatHeight } from "@/lib/fit/score";
+import { SITE_OG_IMAGE_ALT } from "@/lib/metadata";
 import { DataCard, OG_COLORS, OG_FONTS, OG_SIZE, PhotoPanel, SeatGauge, Wordmark, publicImageSrc } from "@/lib/og/shared";
 
-export const alt = "DUOBACK Fit — 키와 앉는 습관으로 내 몸에 맞는 의자를 찾는 서비스";
+// 다른 페이지가 이 이미지를 openGraph.images로 가리킬 때 같은 대체 텍스트를 쓰도록 lib/metadata.ts에 둔다
+export const alt = SITE_OG_IMAGE_ALT;
 export const size = OG_SIZE;
 export const contentType = "image/png";
 

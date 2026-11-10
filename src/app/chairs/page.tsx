@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ChairBrowser } from "@/components/chairs/chair-browser";
 import { ChairCard } from "@/components/chairs/chair-card";
 import { EAGER_CARDS } from "@/components/chairs/grid";
 import { CHAIRS } from "@/data/chairs";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "의자",
   description: "사무용·학생용 의자 라인업을 내 키에 맞는 범위와 함께 비교해 보세요.",
-};
+  path: "/chairs",
+});
 
 export default function ChairsPage() {
   return (

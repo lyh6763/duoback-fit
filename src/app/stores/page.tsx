@@ -1,13 +1,14 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
 import { StoreBrowser } from "@/components/stores/store-browser";
 import { StoreCard } from "@/components/stores/store-card";
 import { STORES } from "@/data/stores";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "매장에서 앉아보기",
   description: "모델별 전시 매장을 찾아 직접 앉아보세요.",
-};
+  path: "/stores",
+});
 
 export default function StoresPage() {
   return (

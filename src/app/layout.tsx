@@ -5,6 +5,7 @@ import { CompareTray } from "@/components/compare/compare-tray";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { Toaster } from "@/components/site/toaster";
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE, SHARED_OPEN_GRAPH } from "@/lib/metadata";
 import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
@@ -29,11 +30,12 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "DUOBACK Fit — 내 몸에 맞는 의자 찾기",
+    default: DEFAULT_TITLE,
     template: "%s | DUOBACK Fit",
   },
-  description: "키, 체중, 앉는 시간을 알려주면 내 몸에 맞는 의자와 그 이유를 알려드려요.",
-  openGraph: { siteName: "DUOBACK Fit", locale: "ko_KR", type: "website" },
+  description: DEFAULT_DESCRIPTION,
+  // 페이지는 pageMetadata()로 og:title·og:url을 더한다. 여기 값은 not-found처럼 따로 정하지 않은 페이지용이다.
+  openGraph: SHARED_OPEN_GRAPH,
   twitter: { card: "summary_large_image" },
 };
 
