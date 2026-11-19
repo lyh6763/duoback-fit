@@ -402,7 +402,17 @@ Tailwind v4는 `--color-*` 이름이 그대로 클래스가 되므로(`bg-{name}
 | `color-feedback-warning` / `-icon` / `-bg` | `--color-warning` / `-icon` / `-bg` | `text-warning` |
 | `color-feedback-error` | `--color-error` | `text-error` |
 | (신규) | `--color-photo` `#F7F3F0` | `bg-photo` |
+| (v0.4) 카드·칩·버튼 테두리 hover {stone-500} | `--color-line-hover` | `hover:border-line-hover` |
+| (v0.4) primary-subtle 위 글자 {moss-700}: 선택 상태, Mid 배지, 안내 박스 | `--color-on-primary-subtle` | `text-on-primary-subtle` |
+| (v0.4) primary-subtle 바탕 버튼 hover {moss-100} | `--color-primary-subtle-hover` | `hover:bg-primary-subtle-hover` |
+| (v0.4) ink로 채운 작은 버튼 hover {stone-600} | `--color-ink-hover` | `hover:bg-ink-hover` |
+| (v0.4) ink 바탕 알림 위 동작 링크 {moss-100} | `--color-inverse-action` | `text-inverse-action` |
+| (v0.4) BodySilhouette 권장 좌판 높이 안내선 {clay-400} | `--color-highlight-line` | `stroke-highlight-line` |
+| (v0.4) 스위치 꺼짐 트랙 {sand-300} / 손잡이 {white} | `--color-switch-off` / `--color-switch-thumb` | `bg-switch-off` |
+| (v0.4) SpecTable 몸 기준 해석 {moss-700} | `--color-data-note` | `text-data-note` |
+| (v0.4) CompareTable Diff 행 점 {clay-400} / 행 배경 {paper-50} | `--color-data-diff` / `--color-data-diff-bg` | `bg-data-diff` |
 
 - **`--color-photo` (신규):** 스튜디오 사진 배경의 평균색(모서리 픽셀 샘플링 결과 `#F2EEEB`\~`#FBF7F4`). 사진 컨테이너에 깔아 흰 카드 안에서 사진 경계가 박스처럼 드러나지 않게 한다.
 - Tailwind 기본 팔레트는 `--color-*: initial`로 지워, 스펙에 없는 색을 쓸 수 없게 했다.
+- **(v0.4) 컴포넌트는 원시 색을 직접 쓰지 않는다.** 2026-11-19에 컴포넌트에 남아 있던 원시 색 클래스 32곳과 `var(--color-ink-900)` 1곳을 위 의미 토큰과 기존 토큰(`primary-subtle`, `line`, `data-surface`, `ink`)으로 옮겼다. 값은 모두 같아 화면은 바뀌지 않는다. `src/app/semantic-colors.test.ts`가 `globals.css`의 Primitive 블록에서 원시 색 이름을 읽어, `src`의 TSX·TS에 원시 색 클래스나 `var(--color-원시)`가 다시 들어오면 `npm test`를 실패시킨다. 1장의 컴포넌트 정의(3장)에 원시 색 이름이 적힌 곳은 값의 출처를 밝힌 것이고, 코드는 이 표의 의미 토큰을 쓴다.
 - 간격은 Tailwind 기본 스케일(4px 단위)이 스펙의 `--space-*`와 같아 그대로 쓴다(`p-4` = `--space-4` = 16px).

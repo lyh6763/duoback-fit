@@ -110,10 +110,10 @@
 |---|---|
 | 프레임워크 | Next.js 16 (App Router, Turbopack) · React 19 · TypeScript |
 | 렌더링 | 모든 페이지 정적 생성. 상품 상세는 `generateStaticParams` + `dynamicParams = false` |
-| 스타일 | Tailwind CSS v4 — `@theme` 토큰이 디자인 스펙(`docs/04-ui-spec.md`)과 1:1 대응 |
+| 스타일 | Tailwind CSS v4 — `@theme` 토큰이 디자인 스펙(`docs/04-ui-spec.md`)과 1:1 대응. 컴포넌트는 원시 색(moss·stone 등) 대신 의미 토큰(`line-hover`, `on-primary-subtle`, `data-diff` 등)만 씀(2026-11-19, 원시 색 33곳 → 0곳, 전후 72장 픽셀·34개 화면 색 계산값 동일) |
 | 데이터 | 타입이 지정된 정적 데이터 (`src/data/chairs.ts`). zod 스키마는 테스트에서만 데이터를 검증하고, 브라우저 저장소 값은 손으로 쓴 파서가 검증(시드 고정 대조 테스트로 zod와 같은 판정을 보장). ESLint가 앱 코드의 zod import를 막음 |
 | 상태 | `useSyncExternalStore` 기반 Web Storage 스토어 (프로필: localStorage, 진행 중 답변: sessionStorage) |
-| 테스트 | Vitest — 매칭 로직과 데이터 정합성 · Playwright — 주요 사용 흐름, axe 접근성 검사(WCAG 2.1 AA), SEO 메타데이터 |
+| 테스트 | Vitest — 매칭 로직과 데이터 정합성, 컴포넌트의 원시 색 사용 금지(`src/app/semantic-colors.test.ts`) · Playwright — 주요 사용 흐름, axe 접근성 검사(WCAG 2.1 AA), SEO 메타데이터 |
 | SEO | 페이지별 메타데이터, 색인 페이지마다 canonical·og:url, JSON-LD `Product`, sitemap, robots |
 | OG 이미지 | `next/og`로 사이트·상품별 1200×630 이미지를 빌드 시 정적 생성. 상품 이미지에 권장 키·좌판 높이 게이지 표시 |
 | CI | GitHub Actions: lint → typecheck → test → build → 폰트 글자 검사 → E2E (실패 시 Playwright 리포트를 아티팩트로 업로드). 병렬 작업으로 Lighthouse 성능 회귀 검사(결과 표는 실행 요약, 리포트는 아티팩트) |
