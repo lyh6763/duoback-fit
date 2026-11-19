@@ -77,7 +77,7 @@ export function ChairBrowser() {
 
   const chipClass = (active: boolean) =>
     `rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-      active ? "border-ink bg-ink text-inverse" : "border-line bg-elevated hover:border-stone-500"
+      active ? "border-ink bg-ink text-inverse" : "border-line bg-elevated hover:border-line-hover"
     }`;
 
   return (
@@ -85,7 +85,7 @@ export function ChairBrowser() {
       {profile === null && (
         <Link
           href="/fit"
-          className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-primary-subtle px-5 py-4 text-moss-700 hover:bg-moss-100"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-primary-subtle px-5 py-4 text-on-primary-subtle hover:bg-primary-subtle-hover"
         >
           <span className="font-medium">내 몸에 맞는 의자만 보고 싶다면 1분 질문에 답해 보세요</span>
           <span className="text-sm font-semibold">내 의자 찾기 →</span>

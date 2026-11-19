@@ -48,6 +48,15 @@
   --color-focus: var(--color-moss-500);
   /* 스튜디오 사진 배경의 평균색. 사진 컨테이너에 깔아 경계가 드러나지 않게 한다. */
   --color-photo: #f7f3f0;
+  /* 상태·자리별 의미 토큰(v0.4). 컴포넌트는 원시 색 대신 이 이름을 쓴다(src/app/semantic-colors.test.ts가 검사). */
+  --color-line-hover: var(--color-stone-500); /* 카드·칩·버튼 테두리 hover */
+  --color-on-primary-subtle: var(--color-moss-700); /* primary-subtle 위 글자: 선택 상태, Mid 배지, 안내 박스 (8.4:1) */
+  --color-primary-subtle-hover: var(--color-moss-100); /* primary-subtle 바탕 버튼 hover */
+  --color-ink-hover: var(--color-stone-600); /* ink로 채운 작은 버튼 hover */
+  --color-inverse-action: var(--color-moss-100); /* ink 바탕 알림 위 동작 링크 */
+  --color-highlight-line: var(--color-clay-400); /* 몸 실루엣의 권장 좌판 높이 안내선(글자는 highlight) */
+  --color-switch-off: var(--color-sand-300); /* 스위치 꺼짐 트랙(켜짐은 primary) */
+  --color-switch-thumb: var(--color-white); /* 스위치 손잡이 */
 
   /* Semantic — 데이터 레이어 */
   --color-data-surface: var(--color-white);
@@ -60,6 +69,9 @@
   --color-data-label: var(--color-stone-500);
   --color-data-value: var(--color-ink-900);
   --color-data-best: var(--color-moss-700);
+  --color-data-note: var(--color-moss-700); /* 사양 값 아래 몸 기준 해석 */
+  --color-data-diff: var(--color-clay-400); /* 비교표 차이 행 라벨 앞 점 */
+  --color-data-diff-bg: var(--color-paper-50); /* 비교표 차이 행 배경 */
 
   /* Semantic — 피드백 */
   --color-warning: var(--color-amber-700);

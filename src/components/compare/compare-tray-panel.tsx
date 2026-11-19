@@ -73,7 +73,7 @@ export function CompareTrayPanel({ list }: { list: readonly string[] }) {
                       else removeButtons.current.delete(chair.slug);
                     }}
                     onClick={(event) => removeChair(index, event.currentTarget)}
-                    className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-ink text-[11px] text-inverse hover:bg-stone-600"
+                    className="absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-ink text-[11px] text-inverse hover:bg-ink-hover"
                   >
                     ✕
                   </button>

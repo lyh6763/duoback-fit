@@ -91,10 +91,10 @@ export function CompareView() {
         >
           <span
             aria-hidden="true"
-            className={`relative h-6 w-11 rounded-full transition-colors ${diffOnly ? "bg-primary" : "bg-sand-300"}`}
+            className={`relative h-6 w-11 rounded-full transition-colors ${diffOnly ? "bg-primary" : "bg-switch-off"}`}
           >
             <span
-              className={`absolute top-0.5 size-5 rounded-full bg-white shadow-sm transition-transform ${
+              className={`absolute top-0.5 size-5 rounded-full bg-switch-thumb shadow-sm transition-transform ${
                 diffOnly ? "translate-x-5.5" : "translate-x-0.5"
               }`}
             />
@@ -134,7 +134,7 @@ export function CompareView() {
 
       <p className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
         <span className="inline-flex items-center gap-1.5">
-          <span aria-hidden="true" className="size-1.5 rounded-full bg-clay-400" />
+          <span aria-hidden="true" className="size-1.5 rounded-full bg-data-diff" />
           모델마다 값이 다른 항목
         </span>
         <span className="inline-flex items-center gap-1.5">

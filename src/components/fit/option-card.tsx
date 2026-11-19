@@ -21,8 +21,8 @@ export function OptionCard({
       onClick={onSelect}
       className={`flex min-h-16 w-full items-center justify-between gap-4 rounded-md border px-5 py-4 text-left transition-colors duration-200 ease-standard ${
         selected
-          ? "border-2 border-primary bg-primary-subtle text-moss-700"
-          : "border-line bg-elevated hover:border-stone-500"
+          ? "border-2 border-primary bg-primary-subtle text-on-primary-subtle"
+          : "border-line bg-elevated hover:border-line-hover"
       }`}
     >
       <span>
@@ -62,7 +62,7 @@ export function OptionRadio({
   onChange: () => void;
 }) {
   return (
-    <label className="flex min-h-16 w-full cursor-pointer items-center justify-between gap-4 rounded-md border border-line bg-elevated px-5 py-4 text-left transition-colors duration-200 ease-standard hover:border-stone-500 has-checked:border-2 has-checked:border-primary has-checked:bg-primary-subtle has-checked:text-moss-700 has-checked:hover:border-primary has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus">
+    <label className="flex min-h-16 w-full cursor-pointer items-center justify-between gap-4 rounded-md border border-line bg-elevated px-5 py-4 text-left transition-colors duration-200 ease-standard hover:border-line-hover has-checked:border-2 has-checked:border-primary has-checked:bg-primary-subtle has-checked:text-on-primary-subtle has-checked:hover:border-primary has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus">
       <span>
         <span className="block text-md font-semibold">{label}</span>
         {description && <span className="mt-0.5 block text-sm text-muted">{description}</span>}

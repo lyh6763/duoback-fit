@@ -63,7 +63,7 @@ function StepButton({ label, onClick, children }: { label: string; onClick: () =
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="grid size-11 shrink-0 place-items-center rounded-full border border-line bg-elevated text-lg font-semibold hover:border-stone-500"
+      className="grid size-11 shrink-0 place-items-center rounded-full border border-line bg-elevated text-lg font-semibold hover:border-line-hover"
     >
       {children}
     </button>

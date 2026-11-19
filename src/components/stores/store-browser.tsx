@@ -35,7 +35,7 @@ export function StoreBrowser() {
               href="/stores"
               scroll={false}
               aria-current={model === null ? "page" : undefined}
-              className={`${CHIP} ${model === null ? "border-ink bg-ink text-inverse" : "border-line bg-elevated hover:border-stone-500"}`}
+              className={`${CHIP} ${model === null ? "border-ink bg-ink text-inverse" : "border-line bg-elevated hover:border-line-hover"}`}
             >
               전체
             </Link>
@@ -48,7 +48,7 @@ export function StoreBrowser() {
                   href={`/stores?model=${chair.slug}`}
                   scroll={false}
                   aria-current={active ? "page" : undefined}
-                  className={`${CHIP} ${active ? "border-ink bg-ink text-inverse" : "border-line bg-elevated hover:border-stone-500"}`}
+                  className={`${CHIP} ${active ? "border-ink bg-ink text-inverse" : "border-line bg-elevated hover:border-line-hover"}`}
                 >
                   {chair.name}
                   {chair.slug === recommended && <span className="sr-only"> (내 추천 1순위)</span>}

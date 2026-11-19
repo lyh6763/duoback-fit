@@ -78,7 +78,7 @@ export function SpecTable({ chair }: { chair: Chair }) {
                 </th>
                 <td className="px-5 py-3 text-right">
                   <span className="font-medium tabular-nums text-data-value">{row.value}</span>
-                  {row.note && <span className="mt-0.5 block text-moss-700">{row.note}</span>}
+                  {row.note && <span className="mt-0.5 block text-data-note">{row.note}</span>}
                 </td>
               </tr>
             ))}

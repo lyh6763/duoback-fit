@@ -32,7 +32,7 @@ export function CompareIconToggle({ slug, name }: { slug: string; name: string }
       className={`grid size-9 place-items-center rounded-full border shadow-sm transition-colors ${
         inCompare
           ? "border-primary bg-primary text-inverse hover:bg-primary-hover"
-          : "border-line bg-elevated text-ink hover:border-stone-500"
+          : "border-line bg-elevated text-ink hover:border-line-hover"
       }`}
     >
       {inCompare ? <CheckIcon /> : <PlusIcon />}

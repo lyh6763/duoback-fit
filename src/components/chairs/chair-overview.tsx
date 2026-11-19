@@ -58,7 +58,7 @@ export function ChairOverview({ chair }: { chair: Chair }) {
               aria-label={`${ANGLE_LABEL[view.angle]} 보기`}
               onClick={() => setActiveIndex(index)}
               className={`overflow-hidden rounded-sm bg-photo ring-offset-2 ring-offset-canvas ${
-                index === activeIndex ? "ring-2 ring-ink" : "ring-1 ring-line hover:ring-stone-500"
+                index === activeIndex ? "ring-2 ring-ink" : "ring-1 ring-line hover:ring-line-hover"
               }`}
             >
               <Image src={view.src} alt="" width={200} height={200} sizes="120px" className="aspect-square w-full object-contain" />
@@ -127,8 +127,8 @@ function FitPanel({ chair }: { chair: Chair }) {
   if (profile === null) {
     return (
       <div className="space-y-4 rounded-lg bg-primary-subtle p-5">
-        <p className="font-semibold text-moss-700">이 의자가 내 몸에 맞을까요?</p>
-        <p className="text-sm text-moss-700">질문 6개에 답하면 여기에 적합도와 그 이유를 보여드려요.</p>
+        <p className="font-semibold text-on-primary-subtle">이 의자가 내 몸에 맞을까요?</p>
+        <p className="text-sm text-on-primary-subtle">질문 6개에 답하면 여기에 적합도와 그 이유를 보여드려요.</p>
         <Link href="/fit" className={buttonClass()}>
           내 몸에 맞는지 확인하기
         </Link>

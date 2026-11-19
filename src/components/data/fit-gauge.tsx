@@ -51,7 +51,7 @@ export function FitGauge({
           />
         )}
         <span
-          className="absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-white bg-data-marker shadow-[0_0_0_1px_var(--color-ink-900)]"
+          className="absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-data-surface bg-data-marker shadow-[0_0_0_1px_var(--color-ink)]"
           style={{ left: `${toPercent(target)}%` }}
         />
         <span

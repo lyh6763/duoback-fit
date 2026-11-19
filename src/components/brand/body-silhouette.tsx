@@ -32,7 +32,7 @@ export function BodySilhouette({
       <line x1="16" y1={FLOOR_Y} x2="224" y2={FLOOR_Y} className="stroke-line" strokeWidth="2" />
 
       {/* 의자 */}
-      <g className="stroke-sand-300" strokeWidth="6" strokeLinecap="round" fill="none">
+      <g className="stroke-line" strokeWidth="6" strokeLinecap="round" fill="none">
         <line x1={hipX - 12} y1={kneeY + 7} x2={FOOT_X - 30} y2={kneeY + 7} />
         <line x1={hipX - 14} y1={kneeY + 4} x2={hipX - 22} y2={shoulderY + 8} />
         <line x1={(hipX + FOOT_X) / 2 - 20} y1={kneeY + 10} x2={(hipX + FOOT_X) / 2 - 20} y2={FLOOR_Y} />
@@ -45,7 +45,7 @@ export function BodySilhouette({
             y1={kneeY}
             x2="224"
             y2={kneeY}
-            className="stroke-clay-400"
+            className="stroke-highlight-line"
             strokeWidth="1.5"
             strokeDasharray="4 4"
           />

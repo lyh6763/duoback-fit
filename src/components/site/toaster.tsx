@@ -31,7 +31,7 @@ export function Toaster() {
               <Link
                 href={toast.action.href}
                 onClick={() => dismissToast(toast.id)}
-                className="shrink-0 rounded-full px-3 py-1 font-semibold text-moss-100 underline-offset-4 hover:underline"
+                className="shrink-0 rounded-full px-3 py-1 font-semibold text-inverse-action underline-offset-4 hover:underline"
               >
                 {toast.action.label}
               </Link>
@@ -42,7 +42,7 @@ export function Toaster() {
                   toast.action?.onClick?.();
                   dismissToast(toast.id);
                 }}
-                className="shrink-0 rounded-full px-3 py-1 font-semibold text-moss-100 underline-offset-4 hover:underline"
+                className="shrink-0 rounded-full px-3 py-1 font-semibold text-inverse-action underline-offset-4 hover:underline"
               >
                 {toast.action.label}
               </button>

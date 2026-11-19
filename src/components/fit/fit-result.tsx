@@ -219,7 +219,7 @@ function ProfileSummary({ profile, onDelete, focusHeading }: { profile: Profile;
               <li key={chip.step}>
                 <Link
                   href={`/fit?step=${chip.step}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-elevated px-3 py-1.5 text-sm hover:border-stone-500"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-elevated px-3 py-1.5 text-sm hover:border-line-hover"
                 >
                   {chip.text}
                   <span className="sr-only">수정하기</span>

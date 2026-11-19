@@ -34,7 +34,7 @@ export function StoreCard({
           {store.name}
         </h3>
         {hasRecommended && (
-          <p className="inline-flex rounded-data bg-moss-50 px-2 py-1 text-xs font-medium text-moss-700">
+          <p className="inline-flex rounded-data bg-primary-subtle px-2 py-1 text-xs font-medium text-on-primary-subtle">
             내 추천 1순위 모델 전시 중
           </p>
         )}
@@ -53,7 +53,7 @@ export function StoreCard({
                   href={`/chairs/${chair.slug}`}
                   title={chair.name}
                   className={`block overflow-hidden rounded-sm bg-photo ring-offset-2 ring-offset-elevated ${
-                    active ? "ring-2 ring-primary" : "ring-1 ring-line hover:ring-stone-500"
+                    active ? "ring-2 ring-primary" : "ring-1 ring-line hover:ring-line-hover"
                   }`}
                 >
                   <Image

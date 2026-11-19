@@ -2,7 +2,7 @@ import { scoreLevel } from "@/lib/fit/score";
 
 const LEVEL_CLASS = {
   high: "bg-primary text-inverse",
-  mid: "bg-moss-50 text-moss-700",
+  mid: "bg-primary-subtle text-on-primary-subtle",
   low: "border border-data-line bg-data-surface text-muted",
 } as const;
 
