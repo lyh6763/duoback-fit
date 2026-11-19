@@ -36,7 +36,8 @@ test.describe("Compare", () => {
   test("filters to differing rows and marks the best value", async ({ page }) => {
     await page.goto("/compare?m=q1w,d2500g");
     const table = page.getByRole("table");
-    const rows = table.locator("tbody tr:not([aria-hidden])");
+    // 접근성 트리에 있는 본문 행만 센다(좁은 화면의 라벨 줄과 다른 배치용으로 숨긴 행은 빠진다)
+    const rows = table.locator("tbody").getByRole("row");
     await expect(rows.first()).toBeVisible();
     const rowsBefore = await rows.count();
 
